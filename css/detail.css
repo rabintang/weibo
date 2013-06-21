@@ -1,0 +1,274 @@
+.main_wrap {
+	margin:45px auto auto auto;
+	*margin:auto auto auto auto;
+	width:980px;
+	height:auto;
+}
+
+/*词条开始*/
+.main {
+	margin:0px;
+	padding:0px 0px 30px 0px;
+    width:980px;
+    height:auto;
+	border:solid 1px #f0eeed;
+	float:left;
+}
+
+.title {
+	margin:20px 0px 0px 5px;
+	height:24px;
+	float:left;
+}
+
+.title_content {
+	margin:0px;
+	height:24px;
+	text-align:left;
+	float:left;
+}
+
+.title_content .span1 {
+	font-size:20px;
+	font-weight:bold;
+	text-decoration:none;
+	color:#333333;
+}
+
+.title_more {
+	margin:0px 0px 0px 20px;
+	padding:8px 0px 0px 0px;
+	height:16px;
+	text-align:left;
+	float:left;
+}
+
+.title_more .span2 {
+	color:#999999;
+}
+
+.title_more .span3 {
+	color:#44B1DA;
+}
+
+.title_share_button {
+	margin:0px 0px 0px 20px;
+	padding:8px 0px 0px 0px;
+	height:16px;
+	text-align:left;
+	float:left;
+}
+
+.explain {
+	margin:6px 0px 0px 5px;
+	width:970px;
+	height:32px;
+	text-align:left;
+	float:left;
+}
+
+.explain span {
+	color:#333333;
+	word-break:break-all;
+	word-wrap:break-word;
+}
+
+.relate_resource {
+	margin:13px 0px 0px 5px;
+	width:970px;
+	height:16px;
+	text-align:left;
+	float:left;
+}
+
+.relate_voc {
+	margin:9px 15px 0px 5px;
+	width:auto;
+	height:16px;
+	text-align:left;
+	float:left;
+}
+
+.relate_link {
+	margin:9px 0px 0px 5px;
+	width:auto;
+	height:16px;
+	text-align:left;
+	float:left;
+}
+
+.relate_blogger {
+	margin:9px 0px 0px 5px;
+	width:970px;
+	height:16px;
+	text-align:left;
+	float:left;
+}
+
+.relate_resource span.relate_resource_content {
+	font-weight:normal;
+	color:#333333;
+}
+
+.relate_resource span.relate_resource_title,.relate_voc span,.relate_link span,.relate_blogger span,.relate_weibo span {
+	font-weight:bold;
+	color:#333333;
+}
+
+.relate_voc span.split_font,.relate_link span.split_font,.relate_blogger span.split_font,.relate_weibo span.split_font {
+	font-weight:normal;
+	color:#DFDCDF;
+}
+
+.weibo_list {
+	margin:4px 0px 0px 5px;
+	width:970px;
+	height:auto;
+	background-color:#f9f9f9;
+	float:left;
+}
+
+.relate_weibo {
+	margin:5px 0px 0px 0px;
+	width:970px;
+	height:16px;
+	text-align:left;
+	float:left;
+}
+
+.weibo_title_split {
+	margin:2px 0px 0px 2px;
+	width:966px;
+	height:10px;
+	text-align:left;
+	float:left;
+}
+
+.weibo_title_split_line {
+	background-image: url('../img/weibo_title_split_line.png');
+	height:3px;
+}
+
+.weibo {
+	margin:5px 0px 0px 0px;
+	width:970px;
+	height:auto;
+	text-align:left;
+	float:left;
+}
+
+.blogger_img {
+	margin:2px 0px 0px 5px;
+	width:50px;
+	height:50px;
+	text-align:left;
+	float:left;
+}
+
+.weibo_content {
+	margin:2px 0px 0px 5px;
+	width:900px;
+	height:auto;
+	text-align:left;
+	float:left;
+}
+
+.weibo_content span {
+	color:#333333;
+	word-break:break-all;
+	word-wrap:break-word;
+}
+
+.weibo_more {
+	margin:8px 0px 0px 5px;
+	width:900px;
+	height:16px;
+	text-align:left;
+	float:left;
+	clear:both;
+}
+
+.weibo_more_left {
+	margin-left:50px;
+	width:auto;
+	height:16px;
+	text-align:left;
+	float:left;
+}
+
+.weibo_more_left .span1 {
+    color:#44B1DA;
+}
+
+.weibo_more_left .span2 {
+    color:#333;
+}
+
+.weibo_more_right {
+	margin:0px 20px 0px 0px;
+	width:auto;
+	height:16px;
+	text-align:left;
+	float:right;
+}
+
+.weibo_more_right a {
+	color:#44B1DA;
+}
+
+.weibo_split {
+	margin:-1px 0px 0px 2px;
+	padding:3px 0px 0px 0px;
+	width:966px;
+	height:7px;
+	text-align:left;
+	float:right;
+}
+
+.weibo_split_line {
+	background-image: url('../img/weibo_split_line.png');
+	height:3px;
+}
+/*词条结束*/
+
+/*分页开始*/
+.pagination_wrap {
+	margin:15px 4px 10px 4px;
+	width:962px;
+	height:20px;
+	text-align:center;
+	float:left;
+}
+
+.pagination_next_or_pre_wrap {
+	margin:0px 0px 0px 15px;
+	height:17px;
+	text-align:center;
+	float:right;
+}
+
+.pagination_next_or_pre {
+	margin:0px;
+	width:56px;
+	height:17px;
+	text-align:center;
+	background-image:url('../img/pagination_next_or_pre.png');
+	float:right;
+}
+
+.pagination_next_or_pre span{
+	text-decoration:none;
+    color:#333;
+	text-align:center;
+}
+
+.pagination_select {
+	margin:0px 0px 0px 15px;
+	height:20px;
+	float:right;
+}
+
+.pagination_select select{
+	height:20px;
+}
+/*分页结束*/

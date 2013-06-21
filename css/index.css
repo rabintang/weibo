@@ -1,0 +1,56 @@
+.main_wrap {
+	margin:14px auto auto auto;
+	width:800px;
+	height:auto;
+}
+
+.main {
+    width:800px;
+    height:auto;
+	float:left;
+}
+
+.logo {
+	margin:-20px 0px 5px 18px;
+    width:800px;
+    height:56px;
+	text-align:left;
+	float:left;
+}
+
+.logoimg {
+	width:200px;
+	height:56px;
+}
+
+.previewimg {
+	margin:4px 0px 0px 0px;
+    width:507px;
+    height:337px;
+	text-align:left;
+	float:left;
+}
+
+.explain {
+	margin:10px 0px 0px 33px;
+    width:260px;
+    height:230px;
+	text-align:left;
+	word-break:break-all;
+	word-wrap:break-word;
+	float:left;
+}
+
+.explain span {
+	font-size:28px;
+	color:#333;
+}
+
+.login_button {
+	margin:30px 0px 0px 68px;
+    width:173px;
+    height:32px;
+	text-align:left;
+	float:left;
+}
+

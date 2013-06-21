@@ -1,0 +1,166 @@
+body {
+    text-align:center;
+    margin:0px auto;
+	font:normal normal normal 13px Arial;
+	text-decoration:none;
+}
+
+p ,span{
+	margin:0px;
+}
+
+img {
+	border:0px;
+}
+
+a:link {
+	text-decoration:none;
+	cursor: pointer;
+}
+
+a:hover, a:visited, a:active {
+    text-decoration:underline;
+	cursor:pointer;
+}
+
+.raw_image {
+    width: 100%;
+    height: 100%;
+}
+
+/*header 开始*/
+.header {
+	margin:0px auto;
+	position:fixed;
+	height:45px;
+	width:100%;
+	background:url(../img/head.png) repeat-x;
+    top:0px;
+	left;0px;
+    z-index:1;
+}
+
+.header_container {
+	width: 1000px;
+}
+
+.logo {
+	margin: 8px 0px 0px 10px;
+    width:105px;
+    height:30px;
+	float:left;
+}
+
+.tab_all {
+	margin: 15px 0px 0px 25px;
+    height:22px;
+	width:38px;
+    text-align:left;
+	float:left;
+}
+
+.tab_meeting {
+	margin: 15px 0px 0px 39px;
+    height:22px;
+	width:38px;
+    text-align:left;
+	float:left;
+}
+
+.tab_algo {
+	margin: 15px 0px 0px 39px;
+    height:22px;
+	width:38px;
+    text-align:left;
+	float:left;
+}
+
+.tab_all a:link,.tab_all a:hover,.tab_all a:visited,.tab_all a:active {
+	font-size:18px;
+	font-weight:bold;
+	text-decoration:none;
+	color:#000;
+}
+
+.tab_meeting a:link,.tab_meeting a:hover,.tab_meeting a:visited,.tab_meeting a:active {
+	font-size:18px;
+	font-weight:bold;
+	text-decoration:none;
+	color:#0000FF;
+}
+
+.tab_algo a:link,.tab_algo a:hover,.tab_algo a:visited,.tab_algo a:active {
+	font-size:18px;
+	font-weight:bold;
+	text-decoration:none;
+	color:#0000FF;
+}
+
+.search {
+	margin:12px 0px 0px 64px;
+    height:25px;
+	width:325px;
+    text-align:left;
+	float:left;
+}
+
+.search_input {
+    width:243px;
+    height:20px;
+    text-align:left;
+    color:#999999;
+	float:left;
+}
+
+.search_sub {
+    width:72px;
+    height:25px;
+    text-align: center;
+	float:right;
+}
+
+.uname {
+	margin: 18px 0px 0px 10px;
+    height:16px;
+	width: auto;
+	float:left;
+}
+
+.uname_font {
+	color:#333333;
+}
+
+.split_font {
+	color:#DFDCDF;
+}
+
+.exit_font {
+	color:#0000FF;
+}
+
+.share_button {
+	margin: 12px 0px 0px 29px;
+    width:106px;
+    height:24px;
+	float:left;
+}
+/*header 结束*/
+
+/*页脚开始*/
+.footer_wrap {
+	margin:45px auto auto auto;
+	width:1000px;
+	height:auto;
+}
+.footer {
+	margin:0px 0px 50px 276px;
+	padding:50px 0px 0px 0px;
+	width:296px;
+	height:16px;
+	float:left;
+}
+
+.footer span{
+	color:#333333;
+}
+/*页脚结束*/
