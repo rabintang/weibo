@@ -1,8 +1,14 @@
+html,body{
+	height:100%;
+	margin:0;
+	padding:0;
+}
 body {
     text-align:center;
-    margin:0px auto;
-	font:normal normal normal 13px Arial;
+	font: normal 12px/1.667 'Helvetica Neue',Tahoma,Arial,sans-serif;
+	color: #333;
 	text-decoration:none;
+	background-color: #f7f0e0;
 }
 
 p ,span{
@@ -12,7 +18,9 @@ p ,span{
 img {
 	border:0px;
 }
-
+a{
+	color: #333;
+}
 a:link {
 	text-decoration:none;
 	cursor: pointer;
@@ -22,145 +30,160 @@ a:hover, a:visited, a:active {
     text-decoration:underline;
 	cursor:pointer;
 }
-
-.raw_image {
-    width: 100%;
-    height: 100%;
+ul,li,dt,dl,dd,div,body{
+	margin:0;
+	padding:0;
+	border:0;
+}
+li{
+	list-style: none;
 }
 
+.share_image {
+    height: 20px;
+    width: 85px;
+}
+.logo{
+	height: 30px;
+    width: 105px;
+}
 /*header 开始*/
 .header {
 	margin:0px auto;
 	position:fixed;
-	height:45px;
+	height:35px;
 	width:100%;
-	background:url(../img/head.png) repeat-x;
-    top:0px;
-	left;0px;
-    z-index:1;
+	box-shadow: 0 0 5px #000;
+	background:url(images/204_93feb325f7.png) repeat-x 0 -360px;
+	top:0px;
+    z-index:10;
 }
 
 .header_container {
-	width: 1000px;
+	width: 990px;
+	color: #b7babd!important;
 }
-
+.header_container a{
+	color: #b7babd!important;
+}
 .logo {
-	margin: 8px 0px 0px 10px;
+	margin: 2px 0px 0px 2px;
     width:105px;
     height:30px;
 	float:left;
 }
 
-.tab_all {
-	margin: 15px 0px 0px 25px;
-    height:22px;
-	width:38px;
-    text-align:left;
+.categories{
+	float: left;
+	height: 25px;
+	margin:0px 0px 0px 50px;
+	font-size:13px;
+}
+.categories ul li{
 	float:left;
-}
-
-.tab_meeting {
-	margin: 15px 0px 0px 39px;
-    height:22px;
-	width:38px;
-    text-align:left;
-	float:left;
-}
-
-.tab_algo {
-	margin: 15px 0px 0px 39px;
-    height:22px;
-	width:38px;
-    text-align:left;
-	float:left;
-}
-
-.tab_all a:link,.tab_all a:hover,.tab_all a:visited,.tab_all a:active {
-	font-size:18px;
-	font-weight:bold;
-	text-decoration:none;
-	color:#000;
-}
-
-.tab_meeting a:link,.tab_meeting a:hover,.tab_meeting a:visited,.tab_meeting a:active {
-	font-size:18px;
-	font-weight:bold;
-	text-decoration:none;
-	color:#0000FF;
-}
-
-.tab_algo a:link,.tab_algo a:hover,.tab_algo a:visited,.tab_algo a:active {
-	font-size:18px;
-	font-weight:bold;
-	text-decoration:none;
-	color:#0000FF;
+	margin:8px 5px 0px 5px;
 }
 
 .search {
-	margin:12px 0px 0px 64px;
+	margin:5px 0px 0px 20px;
     height:25px;
-	width:325px;
+	width:167px;
     text-align:left;
-	float:left;
+	float:right;
+	display: inline;
 }
-
-.search_input {
-    width:243px;
-    height:20px;
+.search .txt {
+	display: inline-block;
+	overflow: hidden;
+	width: 167px;
+	height: 25px;
+	margin: 0;
+	background: #fff url(images/204_93feb325f7.png) repeat-x 0 -240px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+.search .txt a {
+	position: fixed;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	background: url(images/204_93feb325f7.png) no-repeat 0 -330px;
+}
+.search .txt input {
+    width:147px;
+    height:23px;
     text-align:left;
     color:#999999;
 	float:left;
-}
-
-.search_sub {
-    width:72px;
-    height:25px;
-    text-align: center;
-	float:right;
+	border:none;
 }
 
 .uname {
-	margin: 18px 0px 0px 10px;
+	margin: 8px 0px 0px 5px;
     height:16px;
 	width: auto;
-	float:left;
+	float:right;
 }
 
-.uname_font {
-	color:#333333;
-}
-
-.split_font {
+.split_font, .split_font_cat{
 	color:#DFDCDF;
 }
 
-.exit_font {
-	color:#0000FF;
-}
 
 .share_button {
-	margin: 12px 0px 0px 29px;
-    width:106px;
-    height:24px;
-	float:left;
+	margin: 8px 0px 0px 29px;
+    width:86px;
+    height:20px;
+	float:right;
 }
 /*header 结束*/
 
+.all{
+	min-height:100%;
+	height: auto !important;
+	height: 100%; /*IE6不识别min-height*/
+	position: relative;
+}
+
+.middle{
+	background-image:url(images/body_bg.jpg) ;
+	background-repeat: no-repeat;
+	background-position: center 0;
+	background-attachment:fixed;
+	width:100%;
+	margin:0 auto;
+	overflow: hidden;
+	padding-bottom: 146px;
+}
+.main_wrap {
+	margin:55px auto auto auto;
+	width:990px;
+}
+
 /*页脚开始*/
 .footer_wrap {
-	margin:45px auto auto auto;
-	width:1000px;
-	height:auto;
+	margin:-25px auto auto auto;
+	width:100%;
+	height:166px;
+	background-color: #464646;
+	position:absolute;
+	bottom:0;
+	clear:both;
 }
 .footer {
-	margin:0px 0px 50px 276px;
+	margin:50px auto;
 	padding:50px 0px 0px 0px;
 	width:296px;
 	height:16px;
-	float:left;
 }
-
-.footer span{
-	color:#333333;
+.footer_content{
+	width:990px;
+	text-align: justify;
+	margin:0 auto;
+	overflow: hidden;
+}
+.footer span, .footer a{
+	color:#999;
 }
 /*页脚结束*/

@@ -1,4 +1,4 @@
-﻿USE weiboapp;
+USE weiboapp;
 DROP TABLE IF EXISTS `weiboapp`.`atten`;
 
 ALTER TABLE `userlist` MODIFY sx char(1) DEFAULT 'n';

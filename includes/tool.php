@@ -224,7 +224,7 @@ class Tool {
 	}
 
 	//Echo the navigation url on the right.
-	public static function echo_rnavigurl($rpage,$flag,$lpage,$type,$targetpage){
+	public static function echo_rnavigurl($rpage,$flag,$param,$targetpage){
 		$url = $targetpage;
 		if(!empty($rpage) && $rpage > 0){
 			if($flag == 1) {
@@ -237,11 +237,8 @@ class Tool {
 			$rpage = 1;
 		}
 		$url = $url."rpage=$rpage";
-		if(!empty($lpage)){
-			$url = $url."&&lpage=$lpage";
-		}
-		if(!empty($type)){
-			$url = $url."&&type=$type";
+		if(!empty($param)){
+			$url .= '&&'.$param;
 		}
 		echo($url);
 	}
@@ -255,9 +252,13 @@ class Tool {
 		$sql = $sql." ORDER BY abrid DESC LIMIT ".($rpage-1)*$num.",$num";
 		$result = Conn::select($sql);
 		$str = "";
-		while($row = mysql_fetch_array($result)){
-			$str = $str."<div class='voc'><span>• </span><a href='detail.php?abbre={$row['abrid']}' onclick='goto('voc1')' class='local'>";
-			$str = $str."{$row['kl']}</a><a href='detail.php?abbre={$row['abrid']}' class='detail'>[详细]</a></div>";
+		if(mysql_num_rows($result)){
+			$str = "<ul class='voc'>";
+			while($row = mysql_fetch_array($result)){
+				$str = $str."<li><a href='detail.php?abbre={$row['abrid']}' onclick='goto('voc1')'>";
+				$str = $str."{$row['kl']}</a><a href='detail.php?abbre={$row['abrid']}' class='detail'>[详细]</a></li>";
+			}
+			$str .= "</ul>";
 		}
 		echo($str);
 		Conn::close();
@@ -297,6 +298,27 @@ class Tool {
 			echo($str);
 		}
 		Conn::close();
+	}
+
+	public static function get_avoid_noneset($row,$key,$default=Null){
+		$value = $default;
+		if(array_key_exists($key, $row)){
+			$value = $row[$key];
+		}
+		return $value;
+	}
+
+	public static function get_user_info($uid){
+		$sql = "SELECT sn,sx,vi,dr,bl,de,ad,un,an,fn,mn,ci,ei,iu,iv,tg,rn,bd,qq,msn,email,at,ti
+				FROM `userlist` WHERE uid={$uid} LIMIT 1";
+		$result = Conn::select($sql);
+		$uinfo = Null;
+		if(mysql_num_rows($result) > 0){
+			$row = mysql_fetch_object($result);
+			$uinfo = $row;
+		}
+		Conn::close();
+		return $uinfo;
 	}
 }
 ?>
