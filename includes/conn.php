@@ -2,7 +2,7 @@
 //$conn;
 define("servername","localhost");
 define("username","root");
-define("password","tangbin//");
+define("password","");
 define("database","weiboapp");
 class Conn {
 	public static function connect() {

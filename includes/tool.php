@@ -155,7 +155,7 @@ class Tool {
 
 	//Handle a microblog message.
 	private static function _handle_wbmsg($row,$kl){
-		$totallen = 120; //The length of a line(including screen name, microblog message, publish time).
+		$totallen = 115; //The length of a line(including screen name, microblog message, publish time).
 		$restlen = $totallen - Tool::UTF8_length($row["sn"]) - Tool::UTF8_length($kl) - strlen($row['murl']) - strlen($row['pt']);
 		$bpos = Tool::UTF8_stripos($row["mc"],$kl);
 		$str = "<div class='weibo'><div class='weibo_blogger'><span><a href='http://www.weibo.com/{$row["uid"]}'";
