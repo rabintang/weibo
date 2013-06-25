@@ -10,9 +10,9 @@
 })(jQuery);
 
 $(function(){
-	$(".current").removeClass("current");
+	$(".selected").removeClass("selected");
 	if($.getUrlParam('constrain'))		
-		$("#weibofilter li:last").addClass("current");
+		$("#weibofilter li:last").addClass("selected");
 	else
-		$("#weibofilter li:first").addClass("current");
+		$("#weibofilter li:first").addClass("selected");
 })
