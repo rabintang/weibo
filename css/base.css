@@ -119,6 +119,18 @@ li{
 	border:none;
 }
 
+.main {
+	z-index:1;
+	position:relative;
+    width:760px;
+    height:auto;
+	border:solid 1px #f0eeed;
+	float:left;
+	border-width: 0 10px 10px 10px;
+	-webkit-border-image: url(images/061_c1f14947b5.png) 10 repeat;
+	border-image: url(images/061_c1f14947b5.png) 10 fill repeat;
+}
+
 .uname {
 	margin: 8px 0px 0px 5px;
     height:16px;
