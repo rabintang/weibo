@@ -5,6 +5,9 @@
 	text-align:left;
 	float:left;
 }
+.main_wrap{
+	margin-top:85px;
+}
 .main{
 	width:850px;
 	height:500px;
@@ -56,4 +59,7 @@
 	padding-top:40px;
 	height:30px;
 	width:150px;
+}
+.footer_wrap{
+	background-color:#f7f0e0;
 }
