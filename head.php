@@ -2,7 +2,6 @@
   include_once 'includes/conn.php';
   include_once 'includes/tool.php';
  
-  $_SESSION['uid'] = '2100610530';       
   if(!isset($_SESSION['uid']) || $_SESSION['uid'] == Null){ 
     session_start();
     include_once( 'config.php' );

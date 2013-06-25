@@ -17,8 +17,8 @@
 		<div class="main_wrap">
 			<!-- bof 词条列表 -->	
 			<div class="main"><?	
-				define("lpagesize",6);
-				define("rpagesize",15);
+				define("lpagesize",10);
+				define("rpagesize",13);
 				define('need_more_kl',10);
 				$pagebase = 'main.php?';
 				$lpage = Tool::get("lpage");
@@ -71,16 +71,16 @@
                             <span class="tweet-viewpoint">
 							   	<a class="tweet-praise" href="javascript:;" title="顶并转发" data-type="top">
 								    <em class="icon-praise"></em>
-								    <span class="tweet-viewpoint-count">(32)</span>
+								    <span class="tweet-viewpoint-count"></span>
 							   	</a>
 							   	<a class="tweet-disdain" href="javascript:;" title="踩并转发" data-type="down">
 								    <em class="icon-disdain"></em>
-								    <span class="tweet-viewpoint-count">(23)</span>
+								    <span class="tweet-viewpoint-count"></span>
 							   	</a>
 							</span>
-                            <a class="retweet-trigger" href="javascript:;" title="转发这条词条">转发<span class="retweet-counter">(56)</span></a>
+                            <a class="retweet-trigger" href="javascript:;" title="转发这条词条">转发<span class="retweet-counter"></span></a>
                				<a class="fav-trigger" data-favorited="false" title="收藏这条词条" href="javascript:;">收藏</a>
-                            <a class="reply-trigger" title="评论这条词条" href="javascript:;">评论<span class="reply-counter">(33)</span></a>
+                            <a class="reply-trigger" title="评论这条词条" href="javascript:;">评论<span class="reply-counter"></span></a>
 						</div>
 					</div>
 					<!-- bof 微博评论转发 -->

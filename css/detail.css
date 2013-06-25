@@ -181,7 +181,10 @@
 	overflow: hidden;
 	border-color: #e6e6e6;
 }
-
+.raw_image{
+	height:50px;
+	width:50px;
+}
 .blogger_img {
 	margin:2px 0px 0px 5px;
 	width:50px;

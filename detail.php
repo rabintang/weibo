@@ -19,8 +19,8 @@
   	<?php include 'head.php';?>
   
 	<!-- bof 页面中部 --> <?
-	define("lpagesize",5);
-	define("rpagesize",5);
+	define("lpagesize",10);
+	define("rpagesize",13);
 	define("resource_size",4);
 	$pagebase = 'detail.php?';
 	$lpage = Tool::get("lpage");
@@ -55,7 +55,7 @@
 					      	<span class="span3"><? echo($item["st"]);?></span> <span class="span2">)</span>
 					    </div>
 					    <div class="title_share_button">
-					      	<a href="main.php" ><img src="img/title_share_button.gif"  class="raw_image"></a>
+					      	<a href="main.php" ><img src="img/title_share_button.gif"  class="share_image"></a>
 					    </div>
 			      	</div>
 				  	<div class="explain">
