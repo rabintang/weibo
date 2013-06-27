@@ -156,6 +156,7 @@
 .relate_weibo li a{
 	display: block;
 	text-decoration:none;
+	color:#800000;
 }
 .weibo_title_split {
 	margin:2px 0px 0px 2px;

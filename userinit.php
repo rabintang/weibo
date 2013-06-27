@@ -11,6 +11,7 @@ $_SESSION['uid'] = $uid;
 
 $user = $c->show_user_by_id($uid); // Get user's details
 
+/*********** 更新用户的个人信息 ************/
 // Generate user's friendships string
 $str_frdids = '';
 $next_cursor = 0;
@@ -60,5 +61,68 @@ if(mysql_num_rows($is_new) > 0){ // This user is an old user. Then update user's
 		        '{$now}',\"{$str_frdids}\")";
 }
 Conn::execute($sql);
-//$ms  = $c->home_timeline(); // Get user and his attensions' newest microblogs.
+
+/*********** 实时获取用户的最新微博 ************/
+$sql = "SELECT abrid,kl FROM `abbreviation`";
+$result = Conn::select($sql);
+$abbre_list = array();
+while($row = mysql_fetch_array($result)) {
+	$abbre_list[$row['kl']] = $row['abrid'];
+}
+Conn::close();
+
+define('MAX_WEIBO_COUNT',400); // The max value to fetch the user's newest microblog.
+define('MAX_WEIBO_PER_REQUEST',100);  // max value of microblog of each request.
+$sql_weibomsg = "INSERT INTO `weibomsg` (mid,uid,un,sn,iu,rmid,mc,murl,srn,iurl,aurl,vurl,rc,cc,pt,nc) VALUES ";
+$sql_mapping = "INSERT INTO `abbre_weibomsg` (abrid,mid) VALUES ";
+$now = date("Y-m-d H:i:s");
+$sql_abbre = "UPDATE `abbreviation` SET mt='{$now}' WHERE abrid in (";
+$str_weibomsg = ''; // SQL used to insert into table - weibomsg.
+$str_mapping = ''; // SQL used to insert into table - abbre_weibomsg.
+$abrid_list = array(); // Abrid array used to modify mt value of table - abbreviation.
+for($i = 1; $i <= MAX_WEIBO_COUNT/MAX_WEIBO_PER_REQUEST; $i++) {
+	$mslist = $c->home_timeline($i);
+	for($j = 0; $j < sizeof($mslist['statuses']); $j++){
+		$status = $mslist['statuses'][$j];
+		$status_text = $status['text'];
+		while(isset($status['retweeted_status'])){ // To handle the retweeted status.
+			$status = $status['retweeted_status'];
+			if(isset($status['user'])){ // If the status is not deleted by the owner.
+				$status_text .= '//@' . $status['user']['screen_name'] . $status['text'];
+			}
+		}
+		$status = $mslist['statuses'][$j];
+		$status_flag = false; // To identify whether the status has inserted in the database.
+		foreach($abbre_list as $key=>$abrid){ // To find the abbreviation in each status.
+			if(stripos($status_text,$key)){ // Have found the abbreviation.
+				if(!$status_flag) { // Construct SQL of weibomsg.
+					$status_flag = true;
+					$user = $status['user'];
+					$publish_time = date('Y-m-d H:i:s',strtotime($status['created_at']));
+					$retweeted_id = isset($status['retweeted_status'])?$status['retweeted_status']['mid']:'NULL';
+					$str_weibomsg .= "('{$status['mid']}','{$user['id']}','{$user['name']}','{$user['screen_name']}',
+						'{$user['profile_image_url']}','{$retweeted_id}','{$status_text}',NULL,'{$status['source']}',
+						NULL,NULL,NULL,{$status['comments_count']},{$status['reposts_count']},'{$publish_time}',
+						NULL),";
+				}
+				$str_mapping .= "({$abrid},'{$status['mid']}'),";
+				$abrid_list[$abrid] = 1;
+			}
+		}
+	}
+	if($mslist['total_number'] <= $i * MAX_WEIBO_PER_REQUEST)
+	      break;
+}
+if($str_weibomsg != ''){
+	$str_weibomsg = rtrim($str_weibomsg,',');
+	$str_mapping = rtrim($str_mapping,',');
+	$str_abbre = implode(',',array_keys($abrid_list));
+	$sql_weibomsg .= $str_weibomsg;
+	$sql_abbre .= $str_abbre . ')';
+	$sql_mapping .= $str_mapping;
+	Conn::execute($sql_weibomsg);
+	Conn::execute($sql_abbre);
+	Conn::execute($sql_mapping);
+	Conn::close();
+}
 ?>

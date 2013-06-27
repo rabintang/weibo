@@ -61,15 +61,21 @@
 
 .content_a {
 	margin:12px 0px 0px 0px;
-    text-align:left;
-    float:left;
+    	text-align:left;
+    	float:left;
 }
 
 .content_a a{	
-    font-weight:bold;
-    line-height: 1.6em;
-    font-size: 1.4em !important;
+    	font-weight:bold;
+	line-height: 1.6em;
+    	font-size: 1.4em !important;
 	color:#0645ad;
+}
+.content_a a:hover, .voc a:hover{
+	color:#FF8C00;
+}
+a.detail:hover{
+	color:#0082D1;
 }
 .content_a a:visited{
 	color: #0b0080;
@@ -160,8 +166,9 @@
 	float:left;
 }
 
-.weibo_blogger span {
+.weibo_blogger a {
 	color:#0082CB;
+	font-weight:bold;
 }
 
 .weibo_content {
@@ -450,6 +457,9 @@ input, textarea, select, option {
 	border-image: url(images/063_cc3bbaf12c.png) 10 fill;
 	border-radius:3px;
 }
+.user_stat a{
+	color:#2F4F4F;
+}
 .user_stat dl{
 	margin:0 0 0 10px;
 	display: block;
@@ -555,7 +565,7 @@ input, textarea, select, option {
 }
 
 .voc a{
-	color:#885a62;
+	color:#4119C1;
 }
 
 .voc .detail {

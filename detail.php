@@ -91,7 +91,8 @@
 				while($row = mysql_fetch_array($result)){?>
 					<div class="weibo_detail">
 					  	<div class="blogger_img">
-					    	<img src="<?echo($row['iu']);?>"  class="raw_image">
+					    		<a href="http://www.weibo.com/<?=$row['uid'];?>" target="_blank">
+								<img src="<?echo($row['iu']);?>"  class="raw_image"></a>
 					  	</div>
 					  	<div class="weibo_content">
 					  		<span class="user_name">

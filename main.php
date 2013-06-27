@@ -39,12 +39,12 @@
 				$fui = Tool::get_fui($_SESSION['uid']);
 				$sql = "SELECT * FROM `abbreviation` WHERE abrid in (SELECT abrid FROM `abbre_weibomsg`" 
 							. " WHERE mid IN (SELECT mid FROM `weibomsg` WHERE uid IN ({$fui})))"
-							. $condition ." ORDER BY abrid DESC LIMIT " . ($lpage-1)*lpagesize.",".lpagesize;
+							. $condition ." ORDER BY mt,pt,abrid DESC LIMIT " . ($lpage-1)*lpagesize.",".lpagesize;
 				$result = Conn::select($sql);
 				if($lpage == 1 && mysql_num_rows($result) < 10){ // The knowledge to show is to less
 					$num = need_more_kl - mysql_num_rows($result);
 					$sql = "SELECT * FROM `abbreviation` WHERE abrid NOT IN (SELECT abrid FROM `abbre_weibomsg` 
-						WHERE mid IN (SELECT mid FROM `weibomsg` WHERE uid IN ({$fui})) ORDER BY abrid DEST LIMIT {$num}";
+						WHERE mid IN (SELECT mid FROM `weibomsg` WHERE uid IN ({$fui})) ORDER BY mt,pt,abrid DEST LIMIT {$num}";
 					$result_more = Conn::select($sql);
 				}
 				while($row = mysql_fetch_array($result)) {?>
