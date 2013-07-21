@@ -1,0 +1,72 @@
+.main{
+	width:890px;
+}
+.explain{
+	margin: 16px 0px 0px 40px;
+	width: 800px;
+	height: 16px;
+	text-align: left;
+	float: left;
+}
+.ititle {
+	margin: 10px 0px 12px 40px;
+	width: 800px;
+	height: 16px;
+	text-align: left;
+	float: left;
+}
+.webresult {
+	margin:0px 0px 12px 40px;
+    width:780px;
+    height:89px;
+	text-align:left;
+	float:left;
+}
+
+.webresult_title {
+	margin:0px;
+    width:780px;
+    height:16px;
+	text-align:left;
+	float:left;
+}
+
+.webresult_title span {
+	font-size:16px;
+	color:#333333;
+}
+
+.webresult_content {
+	margin:6px 0px 0px 0px;
+    width:780px;
+    height:32px;
+	text-align:left;
+	word-break:break-all;
+	word-wrap:break-word;
+	float:left;
+}
+
+.webresult_link {
+	margin:0px;
+    width:780px;
+    height:16px;
+	text-align:left;
+	float:left;
+}
+
+.webresult_link span {
+	color:#008000;
+}
+
+.webresult_resource {
+	margin:0px;
+    width:780px;
+    height:16px;
+	text-align:left;
+	float:left;
+}
+
+.webresult_resource span {
+	color:#666666;
+}
+/*词条列表结束*/

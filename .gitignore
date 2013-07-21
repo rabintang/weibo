@@ -1,4 +1,1 @@
-config.php
-snippet_extract/
-includes/conn.php
-head.php
+application/config/

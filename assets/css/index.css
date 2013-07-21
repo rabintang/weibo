@@ -1,0 +1,65 @@
+.logo {
+	margin:-20px 0px 5px 18px;
+    width:800px;
+    height:56px;
+	text-align:left;
+	float:left;
+}
+.main_wrap{
+	margin-top:85px;
+}
+.main{
+	width:850px;
+	height:500px;
+	padding:5px 20px;
+}
+.logoimg {
+	width:200px;
+	height:56px;
+}
+.content{
+	padding-top:80px;
+	width:850px;
+}
+.previewimg {
+	margin:4px 0px 0px 0px;
+    width:507px;
+    height:337px;
+	text-align:left;
+	float:left;
+}
+
+.explain {
+	margin:10px 0px 0px 33px;
+    width:260px;
+    height:230px;
+	text-align:left;
+	word-break:break-all;
+	word-wrap:break-word;
+	float:left;
+}
+.explain .title{
+	color:#2F4F4F;
+	font-style:italic;
+	font-weight: bold;
+}
+.explain span {
+	font-size:24px;
+	color:#333;
+}
+
+.login_button {
+	margin:0px 0px 0px 98px;
+    width:173px;
+    height:32px;
+	text-align:left;
+	float:left;
+}
+.login_button img{
+	padding-top:40px;
+	height:30px;
+	width:150px;
+}
+.footer_wrap{
+	background-color:#f7f0e0;
+}
