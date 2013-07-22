@@ -12,14 +12,19 @@ class Hit_UserOnline {
 	 * @param string $access_token 用户登录授权码
 	 */
 	function __construct($access_token){
-		$ci = & get_instance();
-		$ci->load->library('Hit_SaeTClient');
-		$this->_sae_tclient = $ci->hit_saetclient;
+		$CI = & get_instance();
+		$CI->load->helper('Hit_session');
+		$CI->load->helper('Hit_config');
+		
+		$token = get_session('token');
+		$CI->load->library('Hit_SaeTClient', array('access_token'=>$token['access_token']));
+				
+		$this->_saetclient = $CI->hit_saetclient;
 
 		$uid_get = $this->_saetclient->get_uid();
 		$this->_uid = $uid_get['uid'];
-
-		$ci->load->config('hit_sina_api_constants');
+		
+		load_constant_value('hit_sina_api');
 	}
 
 	/**
@@ -28,9 +33,8 @@ class Hit_UserOnline {
 	 * @return bool 是否更新成功
 	 */
 	public function update_or_insert_user(){
-		$ci = & get_instance();
-		$ci->load->helper('date');
-
+		$CI = & get_instance();
+			
 		$user = $this->get_user_info();
 		$ary_query_data = array(
 							'sn' => $user['screen_name'],
@@ -44,18 +48,18 @@ class Hit_UserOnline {
 							'fn' => $user['followers_count'],
 							'mn' => $user['statuses_count'],
 							'iu' => $user['profile_image_url'],
-							'iv' => $user['iv'],
+							'iv' => $user['verified'],
 							'at' => $user['created_at'],
-							'ti' => standard_date('DATE_ATOM'),
-							'fui' => $this->get_user_friends_ids()
+							'ti' => $user['ti'],
+							'fui' => $this->get_friends_ids()
 							);
 
-		$ci->load->model('Hit_UserModel');
-		if($ci->hit_usermodel->exist_user()){ // This user exists. Then update user's information.
-			return $ci->hit_usermodel->update($ary_query_data, array('uid', $this->_uid));
+		$CI->load->model('Hit_UserModel', array('uid'=>$this->_uid));
+		if($CI->Hit_UserModel->exist_user()){ // This user exists. Then update user's information.
+			return $CI->Hit_UserModel->update($ary_query_data, array('uid'=>$this->_uid));
 		} else { // Insert user's information.
 			$ary_query_data['uid'] = $this->_uid;
-			return $ci->hit_usermodel->insert($ary_query_data);
+			return $CI->Hit_UserModel->insert($ary_query_data);
 		}
 	}
 
@@ -64,9 +68,14 @@ class Hit_UserOnline {
 	 * @return array 包含用户信息的关联数组
 	 */
 	public function get_user_info(){
+		$CI = & get_instance();
+		$CI->load->helper('date');
+		
 		$user = $this->_saetclient->show_user_by_id($this->_uid);
 		$user['address'] = (string)$user['province'] . ' ' . (string)$user['city'];
 		$user['verified'] = $user['verified'] ? 1 : 0;
+		$user['created_at'] = standard_date('DATE_ATOM', strtotime($user['created_at']));
+		$user['ti'] = standard_date('DATE_ATOM');
 		return $user;
 	}
 
@@ -89,7 +98,8 @@ class Hit_UserOnline {
 		} while($response_data['total_number'] == MAX_FRIENDSHIP_FRIENDS_IDS_COUNT);
 
 		if($return_as_string) { // 按照字符串格式返回
-			$str_frdids_ids = "'" . implode("','" $ary_friends_ids) . "'";
+			$str_frdids_ids = implode("','", $ary_friends_ids);
+			$str_frdids_ids = "'" . $str_frdids_ids . "'";
 			return $str_frdids_ids;
 		} else {
 			return $ary_friends_ids;

@@ -1,26 +1,19 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-include 'saetv2.ex.class.php';
+include_once 'saetv2.ex.class.php';
 
 /**
  * 对SaeTOAuthV2的封装
  */
 class Hit_SaeTOAuth extends SaeTOAuthV2{
-	private static $config; // 保存配置文件中的配置信息，主要是keys和callback_url
-
-	/**
-	 * 初始化静态成员变量config
-	 */
-	public static function init_config(){
-		$ci = & get_instance();
-		$ci->load->config('hit_config',true);
-		self::$config = $ci->config->item('weibo');
-	}
-
+	private $akey;
+	private $skey;
+	private $callbakc_url;
+	
 	/**
 	 * 自定义授权类的构造函数
 	 */
-	function __construct(){
+	function __construct($config_file = 'hit_config'){
 		define( 'DEBUG_MODE', false );
 		if ( !function_exists('curl_init') ) {
 		    echo '您的服务器不支持 PHP 的 Curl 模块，请安装或与服务器管理员联系。';
@@ -30,8 +23,16 @@ class Hit_SaeTOAuth extends SaeTOAuthV2{
 		    error_reporting(E_ALL);
 		    ini_set('display_errors', true);
 		}
-
-		parent::__construct(self::$config['wb_akey'], self::$config['wb_skey']);
+		
+		$CI = & get_instance();
+		$CI->load->helper('Hit_config');
+				
+		$ary_config = get_config_value(array('wb_akey', 'wb_skey', 'wb_callback_url'));
+		$this->akey = $ary_config['wb_akey'];
+		$this->skey = $ary_config['wb_skey'];
+		$this->callback_url = $ary_config['wb_callback_url'];
+		
+		parent::__construct($this->akey, $this->skey);
 	}
 
 	/**
@@ -49,7 +50,9 @@ class Hit_SaeTOAuth extends SaeTOAuthV2{
 	 * @return string
 	 */
 	public function get_authorize_url($response_type = 'code', $state = NULL, $display = NULL, $forcelogin = NULL, $language = NULL){
-		return $this->getAuthorizeURL(self::$config['wb_callback_url'], $response_type, $state, $display, $forcelogin, $language);
+//		echo 'ssss' .  self::$config['wb_callback_url'];
+//		echo 'fffff'. self::$config['wb_akey'];
+		return $this->getAuthorizeURL($this->callback_url, $response_type, $state, $display, $forcelogin, $language);
 	}
 
 	/**
@@ -57,7 +60,7 @@ class Hit_SaeTOAuth extends SaeTOAuthV2{
 	 * @return string
 	 */
 	public function get_callback_url(){
-		return self::$config['wb_callback_url'];
+		return $this->callback_url;
 	}
 
 	/**
@@ -73,5 +76,4 @@ class Hit_SaeTOAuth extends SaeTOAuthV2{
 		return $this->getAccessToken($type, $keys);
 	}
 }
-Hit_SaeTOAuth::init_config();
 ?>

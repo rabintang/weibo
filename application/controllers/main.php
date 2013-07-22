@@ -15,8 +15,6 @@ class Main extends CI_Controller
 		parent::__construct();
 		$this->load->helper('Hit_session');
 		$this->load->helper('Hit_config');
-
-		$this->session->set_userdata('uid','2100610530');
 	}
 
 	public function index()

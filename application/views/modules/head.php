@@ -18,7 +18,7 @@
       <div class="search">
         <form name="sword" action="<?=site_url("search/index");?>" method="post" target="_self" title="请输入词条">
           <i class="txt">
-            <input name="word" id="search" type="text" value="请输入词条" class="search_input" 
+		<input name="word" id="search" type="text" value="请输入词条" class="search_input" 
               onClick="this.value='';" onBlur="this.value='请输入词条';">
             <a onclick="document.sword.submit();" title="搜索"></a>
           </i>
@@ -28,7 +28,7 @@
           <a href="<?=site_url('main/index');?>" ><img src="img/share_button_top.gif"  class="share_image"></a>
       </div>
       <div class="uname">
-        <span class="uname_font"><a href="#"><?=get_session('user')['sn'];?></a></span>
+        <span class="uname_font"><a href="#"><?=get_session('user/sn');?></a></span>
         <span class="split_font">|</span>
         <a href="#">
           <span class="exit_font">退出</span>

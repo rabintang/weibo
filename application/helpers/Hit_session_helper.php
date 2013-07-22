@@ -15,6 +15,14 @@ if( ! function_exists('get_session'))
 	function get_session($session_name)
 	{
 		$ci = & get_instance();
+		if(strpos($session_name, '/')){
+			$ary_splits = explode('/', $session_name);
+			$instance = $ci->session->userdata($ary_splits[0]);
+			if($instance){
+				return $instance[$ary_splits[1]];
+			}
+			return FALSE;
+		}
 		return $ci->session->userdata($session_name);
 	}
 }

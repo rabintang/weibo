@@ -6,11 +6,11 @@
 		<div class="user_stat">
 			<dl>
 				<dt>
-					<a href="http://www.weibo.com/<?=$user['uid'];?>">
+					<a href="http://www.weibo.com/<?=$user['uid'];?>" target="_blank">
 						<img src="<?=$user['iu']?>" alt="<?=$user['sn'];?>" /></a>
 				</dt>
 				<dd>
-					<a href="http://www.weibo.com/<?=$user['uid'];?>" title="<?=$user['sn'];?>">
+					<a href="http://www.weibo.com/<?=$user['uid'];?>" title="<?=$user['sn'];?>" target="_blank">
 						<?=$user['sn'];?></a>
 				</dd>
 			</dl>

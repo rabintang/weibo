@@ -25,7 +25,7 @@ class Callback extends CI_Controller
 			}
 			$this->session->set_userdata('weibo_state',''));*/
 
-			$keys['code'] = $this->input->get_post['code'];
+			$keys['code'] = $this->input->get_post('code');
 			$keys['redirect_uri'] = $this->hit_saetoauth->get_callback_url();
 			try {
 				$token = $this->hit_saetoauth->get_access_token('code', $keys) ;
@@ -45,11 +45,14 @@ class Callback extends CI_Controller
 			$this->hit_useronline->update_or_insert_user();
 
 			$this->load->library('Hit_KlgRecommender', array('access_token'=>$token['access_token'],
-															 'uid'=>$uid));
-			$this->hit_klgrecommender->recommden_when_login();
+									 'uid'=>$uid));
+			$this->hit_klgrecommender->recommend_when_login();
 		}
-
-		$data['authorize_success'] = $authorize_success;
-		$this->load->view('callback',$data);
+		
+		if($authorize_success){
+			redirect('/main/index');
+		} else {
+			$this->load->view('fail');
+		}
 	}
 }

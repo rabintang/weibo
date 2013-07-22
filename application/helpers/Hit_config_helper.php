@@ -26,3 +26,12 @@ if( ! function_exists('get_config_value'))
 		return $CI->config->item($keys, $file);
 	}
 }
+
+if( ! function_exists('load_constant_value'))
+{
+	function load_constant_value($file = 'hit_sina_api')
+	{
+		$config_path = APPPATH . 'config/' . $file . '.php';
+		include_once($config_path);
+	}
+}

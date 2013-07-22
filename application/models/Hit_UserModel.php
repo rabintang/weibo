@@ -24,7 +24,7 @@ class Hit_UserModel extends Hit_Model
 			$uid = $this->_uid;
 		}
 		if($uid != NULL) {
-			$sql_select = "SELECT COUNT(*) AS count FROM {self::$table_name} WHERE uid=?";
+			$sql_select = "SELECT COUNT(*) AS count FROM {$this->table_name} WHERE uid=?";
 			$query = $this->db->query($sql_select,array($uid));
 			if($query->num_rows() > 0) {
 				$row = $query->row();
