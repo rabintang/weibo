@@ -23,12 +23,12 @@ class Main extends CI_Controller
 		$this->load->model('Hit_UserModel', array('uid'=>get_session('uid')));
 		$this->load->library('Hit_KlgRecommender', array('uid'=>get_session('uid')));
 		$this->load->library('Hit_WbRecommender');
-
+		
 		// 获取URL参数
 		$category = $this->uri->segment(Main::INDEX_CATEGORY, 0);
 		$lpagenum = $this->uri->segment(Main::INDEX_LPAGENUM, 1);
 		$rpagenum = $this->uri->segment(Main::INDEX_RPAGENUM, 1);
-
+		
 		$fui = $this->Hit_UserModel->get_fui();
 		
 		// 设置分页
@@ -53,24 +53,25 @@ class Main extends CI_Controller
 		$relate_abbre_count = get_config_value('main_max_relate_abbre');
 		$ary_abbres = $this->hit_klgrecommender->recommend_per_page($lpagenum, $category, $fui);
 		$ary_items = array();
-		foreach($ary_abbres as $abbre){
-			$ary_wb_brif = $this->hit_wbrecommender->recommend_brif($abbre['abrid'], $relate_status_count, $fui);
-			$ary_blogger = $this->hit_wbrecommender->recommend_blogger($abbre['abrid'], $relate_blogger_count);
-			$ary_relate_abbres = $this->hit_klgrecommender->recommend_relate_abbre($abbre['abrid'], $relate_abbre_count);
-			$ary_items[] = array(
+		if( $ary_abbres && is_array($ary_abbres) && count($ary_abbres) > 0){
+			foreach($ary_abbres as $abbre){
+				$ary_wb_brif = $this->hit_wbrecommender->recommend_brif($abbre['abrid'], $relate_status_count, $fui);
+				$ary_blogger = $this->hit_wbrecommender->recommend_blogger($abbre['abrid'], $relate_blogger_count);
+				$ary_relate_abbres = $this->hit_klgrecommender->recommend_relate_abbre($abbre['abrid'], $relate_abbre_count);
+				$ary_items[] = array(
 							'abbre'=>$abbre, 
 							'wb_brif'=>$ary_wb_brif,
 							'bloggers'=>$ary_blogger,
 							'relate_abbres'=>$ary_relate_abbres
 							);
+			}
 		}
 		$box_right = get_box_right($rpagenum);
 		$data = array(
-					'pagination' => $str_pagination,
-					'items' => $ary_items,
-					'box_right' => $box_right
-					);
-
+				'pagination' => $str_pagination,
+				'items' => $ary_items,
+				'box_right' => $box_right
+				);
 		$this->load->auto_view('main', $data);
 	}
 }

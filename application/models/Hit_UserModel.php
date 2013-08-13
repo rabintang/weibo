@@ -10,7 +10,7 @@ class Hit_UserModel extends Hit_Model
 	function __construct($params = NULL)
 	{
 		parent::__construct('userlist');
-		$this->_uid = isset($params['uid']) ? $params['uid'] : NULL;
+		$this->_uid = isset($params['uid']) ? (string)$params['uid'] : NULL;
 	}
 
 	/**

@@ -22,7 +22,7 @@ class Hit_UserOnline {
 		$this->_saetclient = $CI->hit_saetclient;
 
 		$uid_get = $this->_saetclient->get_uid();
-		$this->_uid = $uid_get['uid'];
+		$this->_uid = (string)$uid_get['uid'];
 		
 		load_constant_value('hit_sina_api');
 	}

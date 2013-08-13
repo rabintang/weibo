@@ -29,7 +29,7 @@ class Hit_KlgRecommender
 		}
 
 		if(isset($params['uid']) && $params['uid'] != ''){
-			$this->_uid = $params['uid'];
+			$this->_uid = (string)$params['uid'];
 		} else if($this->_saetclient) {
 			$this->_uid = $this->_saetclient->get_uid();
 		}

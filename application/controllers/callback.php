@@ -30,10 +30,10 @@ class Callback extends CI_Controller
 			try {
 				$token = $this->hit_saetoauth->get_access_token('code', $keys) ;
 				if ($token) {
-		        	$this->session->set_userdata('token',$token);
-		        	set_cookie('weibojs_'.$this->hit_saetoauth->client_id, http_build_query($token));
-		        	$authorize_success = true;
-		        }
+		        		$this->session->set_userdata('token',$token);
+		        		set_cookie('weibojs_'.$this->hit_saetoauth->client_id, http_build_query($token));
+			        	$authorize_success = true;
+			        }
 			} catch (Exception $e) {
 			    log_message('error','In callback:' . $e->getMessage());
 			}
@@ -42,6 +42,7 @@ class Callback extends CI_Controller
 		if($authorize_success) { // 验证成功，更新用户信息，初始化推荐词条
 			$this->load->library('Hit_UserOnline',array('access_token'=>$token['access_token']));
 			$uid = $this->hit_useronline->get_uid();
+			$this->session->set_userdata('uid', $uid);
 			$this->hit_useronline->update_or_insert_user();
 
 			$this->load->library('Hit_KlgRecommender', array('access_token'=>$token['access_token'],
