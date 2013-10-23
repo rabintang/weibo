@@ -13,16 +13,17 @@ class Hit_KlgRecommender
 	/**
 	 * 词条推荐类的构造函数
 	 * @param array $params 
-	 * 					-- access_token 用户的授权码
-	 * 					-- uid 用户ID
+	 * 	-- access_token 用户的授权码
+	 * 	-- uid 用户ID
 	 */
 	function __construct($params)
 	{
 		$ci = & get_instance();
 		$ci->load->helper('Hit_config');
 		$ci->load->model('Hit_AbbreviationModel');
+		$ci->load->helper('Hit_string');
 		$this->_abbreviater = $ci->Hit_AbbreviationModel;
-
+		
 		if(isset($params['access_token']) && $param['access_token'] != '') {
 			$ci->load->library('Hit_SaeTClient');
 			$this->_saetclient = $ci->hit_saetclient;
@@ -81,30 +82,30 @@ class Hit_KlgRecommender
 							$retweeted_id = isset($status['retweeted_status'])?$status['retweeted_status']['mid']:'NULL';
 							$status['created_at'] = standard_date('DATE_ATOM', $status['created_at']);
 							$ary_status_batch[] = array(
-													'mid' => $status['mid'],
-													'uid' => $status['user']['uid'],
-													'un' => $status['user']['name'],
-													'sn' => $status['user']['screen_name'],
-													'iu' => $status['profile_image_url'],
-													'rmid' => $retweeted_id,
-													'mc' => $status['text'],
-													'murl' => NULL,
-													'srn' => $status['source'],
-													'iurl' => NULL,
-													'aurl' => NULL,
-													'vurl' => NULL,
-													'rc' => $status['reposts_count'],
-													'cc' => $status['comments_count'],
-													'pt' => $status['created_at'],
-													'nc' => NULL
-													);
+								'mid' => $status['mid'],
+								'uid' => $status['user']['uid'],
+								'un' => $status['user']['name'],
+								'sn' => $status['user']['screen_name'],
+								'iu' => $status['profile_image_url'],
+								'rmid' => $retweeted_id,
+								'mc' => $status['text'],
+								'murl' => NULL,
+								'srn' => $status['source'],
+								'iurl' => NULL,
+								'aurl' => NULL,
+								'vurl' => NULL,
+								'rc' => $status['reposts_count'],
+								'cc' => $status['comments_count'],
+								'pt' => $status['created_at'],
+								'nc' => NULL
+							);
 						}
 
 						// 加入待写入 abbre_weibomsg 的数据
 						$ary_mapping_batch[] = array(
-												'abrid' => $abrid,
-												'mid' => $status['mid']
-												);
+								'abrid' => $abrid,
+								'mid' => $status['mid']
+						);
 
 						// 加入待修改的 abbreviation 的abrid
 						$ary_knowledge_batch[$abrid] = 1;
@@ -129,6 +130,79 @@ class Hit_KlgRecommender
 		return FALSE;
 	}
 
+	/**
+	 * main 页用户刚登录时推荐的词条
+	 * @param integer $num 推荐的数量
+	 * @param string $uid 用户ID
+	 */
+	public function recommend_top_n($num = NULL, $uid = NULL)
+	{
+		$user_model = $this->_user;
+		if($uid == NULL){
+			$uid = $this->_uid;
+		} else if($uid !== $this->_uid){
+			$CI = & get_instance();
+			$CI->load->model('Hit_UserModel', array('uid'=>$uid));
+			$user_model = $CI->Hit_UserModel;
+		} else {
+			return NULL;
+		}
+		      
+		if($num == NULL){
+			$num = get_config_value('main_klg_top_n');
+			if( ! $num )
+			      $num = 5;
+		}
+
+		// 获取用户关注好友微博中的最新词条,按照修改时间排序
+		$fui = $user_model->get_fui();
+		$conditions = "mt > (SELECT last_login FROM `userlist` WHERE uid='{$uid}')";
+		$ary_abbres = $this->_abbreviater->select_user_relate( array(
+					'fields' => 'abrid,kl,pt,wk,bk,bf',
+					'conditions' => $conditions,
+					'fui' => $fui,
+					'orderby' => array('mt'=>'DESC'),
+					'limit' => $num
+					));
+	
+		// 数量不足时从全体数据库中检索最新词条
+		if(count($ary_abbres) < $num){
+			$abrids = '';
+			if(count($ary_abbres) > 0){
+				$abrids = ' AND abrid NOT IN(';
+				foreach($ary_abbres as $abbre){
+					$abrids .= $abbre['abrid'] . ',';
+				}
+				$abrids = rtrim($abrids, ',');
+				$abrids .= ") ";
+			}
+			$conditions = "mt > (SELECT last_login FROM `userlist` WHERE uid='{$uid}')" . $abrids;
+			$count = $num - count($ary_abbres);
+			$ary_abbres_2 = $this->_abbreviater->select( array(
+					'fields' => 'abrid, kl, pt, wk, bk, bf',
+					'conditions' => $conditions,
+					'orderby' => array('mt'=>'DESC'),
+					'limit' => $count
+					) );
+			$ary_abbres = array_merge($ary_abbres, $ary_abbres_2);
+		}
+		return $this->cutoff_klg_brif($ary_abbres);
+	}
+	
+	private function cutoff_klg_brif($ary_abbres)
+	{		
+		$main_klg_brif_length = get_config_value('main_klg_length');
+		if( ! $main_klg_brif_length ){
+			$main_klg_brif_length = 340;
+		}
+		for($i = 0; $i < count($ary_abbres); $i++){
+			if(UTF8_length($ary_abbres[$i]['bf']) > $main_klg_brif_length){
+				$ary_abbres[$i]['bf'] = UTF8_substr($ary_abbres[$i]['bf'], 0, $main_klg_brif_length) . ' ... ...';
+			}
+		}
+		return $ary_abbres;
+	}
+	
 	/**
 	 * main 页展示的词条
 	 * @param  integer $pageindex 第几页
@@ -155,7 +229,7 @@ class Hit_KlgRecommender
 					'orderby' => array('mt'=>'DESC'),
 					'limit' => array($bpos, $pagesize)
 					));
-		return $ary_abbres;
+		return $this->cutoff_klg_brif($ary_abbres);
 	}
 
 	/**

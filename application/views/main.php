@@ -17,13 +17,74 @@
 		<div class="main_wrap">
 			<!-- bof 词条列表 -->	
 			<div class="main"><?php
+			if(isset($top_n)){?>
+				<fieldset class="top_n"><legend>以下是系统为您推荐的词条</legend></fieldset><?php
+				foreach($top_n as $item) {?>
+					<!-- bof 词条 -->
+				  	<div class="voc_main" id="voc1">
+						<div class="content_a">
+							<p><a href='<?=site_url("detail/index/{$item['abbre']['abrid']}");?>' target="_blank"><?=$item['abbre']['kl'];?></a>
+								&nbsp;&nbsp;<?=$item['abbre']['bf'];?></p>
+						</div>
+						<br style="clear:both;"/><?php
+						if(isset($item['relate_abbres'])) {
+							echo get_relate_abbres($item['relate_abbres']);
+						}?>
+						<?=get_wk_bk($item['abbre']['wk'], $item['abbre']['bk']);?>
+						<!-- bof 微博列表 -->
+						<div class="main_weibo">
+						  	<div class="weibo_tittle">
+								<span >相关微博: </span><?php
+		   							if(isset($item['bloggers'])){
+		    						    		echo get_relate_blogger($item['bloggers']);
+									}?>
+						  	</div><?php 
+						  	if(isset($item['wb_brif']) && sizeof($item['wb_brif']) > 0) {?>
+						  		<div class="weibo_tittle_sep">
+						  			<div class="weibo_tittle_sep_line"></div>
+						  		</div><?php
+						  		$first_flag = TRUE;
+						  		foreach($item['wb_brif'] as $wb_brif){
+						  			if( ! $first_flag) {
+						  				echo '<div class="weibo_sep"><div class="weibo_sep_line"></div></div>';
+						  			}
+						  			$first_flag = FALSE;
+						  			echo $wb_brif;
+						  		}
+							}?>
+						</div>
+						<!-- eof 微博列表 -->
+						<div class="voc_foot">
+							<div class="voc_foot_time"><?=$item['abbre']['pt'];?></div>
+							<div class="voc_foot_option">
+				                        	<span class="tweet-viewpoint">
+	    							   	<a class="tweet-praise" href="javascript:;" title="顶并转发" data-type="top">
+										<em class="icon-praise"></em>
+										<span class="tweet-viewpoint-count"></span>
+	  							   	</a>
+								   	<a class="tweet-disdain" href="javascript:;" title="踩并转发" data-type="down">
+									    <em class="icon-disdain"></em>
+									    <span class="tweet-viewpoint-count"></span>
+								   	</a>
+								</span>
+							        <a class="retweet-trigger" href="javascript:;" title="转发这条词条">转发<span class="retweet-counter"></span></a>
+			               				<a class="fav-trigger" data-favorited="false" title="收藏这条词条" href="javascript:;">收藏</a>
+			   		                        <a class="reply-trigger" title="评论这条词条" href="javascript:;">评论<span class="reply-counter"></span></a>
+							</div>
+						</div>
+					</div>
+					<!-- eof 词条 --><?php
+				}?>
+				<fieldset class="top_n"><legend>以上是系统为您推荐的词条</legend></fieldset><?php
+			}
 			foreach($items as $item) {?>
 				<!-- bof 词条 -->
 			  	<div class="voc_main" id="voc1">
 					<div class="content_a">
 						<p><a href='<?=site_url("detail/index/{$item['abbre']['abrid']}");?>'><?=$item['abbre']['kl'];?></a>
 						&nbsp;&nbsp;<?=$item['abbre']['bf'];?></p>
-					</div><?php
+					</div>
+					<br style="clear:both;"/><?php
 					if(isset($item['relate_abbres'])) {
 						echo get_relate_abbres($item['relate_abbres']);
 					}?>

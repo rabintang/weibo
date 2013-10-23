@@ -37,8 +37,8 @@
 			</div>
 			<ul class='voc'><?php
 				foreach($abbres as $abbre){?>
-					<li><a href='<?=site_url("detail/index/{$abbre['abrid']}");?>' onclick='goto('voc1')'>
-						<?=$abbre['kl'];?></a><a href='<?=site_url("detail/index/{$abbre['abrid']}");?>' class='detail'>[详细]</a></li><?php
+					<li><a href='<?=site_url("detail/index/{$abbre['abrid']}");?>' onclick='goto('voc1')' target="_blank">
+						<?=$abbre['kl'];?></a><a href='<?=site_url("detail/index/{$abbre['abrid']}");?>' class='detail' target="_blank">[详细]</a></li><?php
 				}?>
 			</ul>
 			<div class="voc_navi">

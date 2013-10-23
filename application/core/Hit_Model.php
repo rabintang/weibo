@@ -223,7 +223,11 @@ class Hit_Model extends CI_Model
 	}
 
 
-
+	/*返回最新执行的一条SQL语句*/
+	public function get_last_query()
+	{
+		return $this->db->last_query();
+	}
 
 	/**
 	 * 判断是否为string类型的条件

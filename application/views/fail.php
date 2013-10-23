@@ -14,9 +14,16 @@
 				<div class="main">
 					<div class="logo">
 					    	<img src="img/logo.gif" class="raw_image logoimg" alt="知识推荐">
+						<span class="login"><a href="<?=site_url();?>">登录</a></span>
 					</div>
 					<div class="content">
-						<h1>授权失败,请重试!</h1>
+						<h1><?php
+							if(isset($message)){
+								echo $message;
+							}else{
+								echo '登录失败,请重试';	
+							}?>
+						</h1>
 						<div class="previewimg">
 							<img src="img/tag.png" class="raw_image" alt="知识推荐">
 						</div>

@@ -1,9 +1,9 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH') ) exit('No direct script access allowed');
 
 /**
  * 系统主页面
  */
-class Detail extends CI_Controller
+class Detail extends Hit_Controller
 {
 	// 参数在URL中的位置(第几段)
 	const INDEX_ABRID = 3;

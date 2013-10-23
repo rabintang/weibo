@@ -9,6 +9,7 @@ class Callback extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->helper('cookie');
+		$this->load->helper('Hit_weibo_api');
 	}
 
 	public function index()	
@@ -24,7 +25,6 @@ class Callback extends CI_Controller
 				exit;
 			}
 			$this->session->set_userdata('weibo_state',''));*/
-
 			$keys['code'] = $this->input->get_post('code');
 			$keys['redirect_uri'] = $this->hit_saetoauth->get_callback_url();
 			try {
@@ -35,25 +35,25 @@ class Callback extends CI_Controller
 			        	$authorize_success = true;
 			        }
 			} catch (Exception $e) {
-			    log_message('error','In callback:' . $e->getMessage());
+			    	log_message('error','In callback:' . $e->getMessage());
 			}
 		}
 		
 		if($authorize_success) { // 验证成功，更新用户信息，初始化推荐词条
 			$this->load->library('Hit_UserOnline',array('access_token'=>$token['access_token']));
 			$uid = $this->hit_useronline->get_uid();
-			$this->session->set_userdata('uid', $uid);
+			$this->session->set_userdata('uid', $uid);			
 			$this->hit_useronline->update_or_insert_user();
 
 			$this->load->library('Hit_KlgRecommender', array('access_token'=>$token['access_token'],
 									 'uid'=>$uid));
 			$this->hit_klgrecommender->recommend_when_login();
 		}
-		
 		if($authorize_success){
-			redirect('/main/index');
+			$this->session->set_userdata('recommend_top_n', 'true');
+			redirect('main/index');
 		} else {
-			$this->load->view('fail');
+			redirect('user/fail');
 		}
 	}
 }

@@ -11,19 +11,33 @@ class Hit_UserOnline {
 	 * 用户信息处理类助手
 	 * @param string $access_token 用户登录授权码
 	 */
-	function __construct($access_token){
+	function __construct($params){
 		$CI = & get_instance();
 		$CI->load->helper('Hit_session');
 		$CI->load->helper('Hit_config');
 		
-		$token = get_session('token');
-		$CI->load->library('Hit_SaeTClient', array('access_token'=>$token['access_token']));
-				
-		$this->_saetclient = $CI->hit_saetclient;
-
-		$uid_get = $this->_saetclient->get_uid();
-		$this->_uid = (string)$uid_get['uid'];
+		$access_token = NULL;
+		if(isset($params['access_token'])){
+			$access_token = $params['access_token'];
+		} else {
+			$token = get_session('token');
+			if( $token ){
+				$access_token = $toekn['access_token'];
+			}
+		}
+		if( $access_token == NULL ){
+			log_message('info', 'Hit_UserOnline 获取用户授权码失败');
+			redirect('user/fail');
+		}
+		$CI->load->library('Hit_SaeTClient', array('access_token'=>$access_token));
 		
+		$this->_saetclient = $CI->hit_saetclient;
+		$uid_get = $this->_saetclient->get_uid();
+		if( ! isset($uid_get['uid']) ){
+			log_message('error', 'Hit_UserOnline 获取用户信息失败');
+			redirect('user/fail');
+		}
+		$this->_uid = (string)$uid_get['uid'];
 		load_constant_value('hit_sina_api');
 	}
 
@@ -36,30 +50,33 @@ class Hit_UserOnline {
 		$CI = & get_instance();
 			
 		$user = $this->get_user_info();
-		$ary_query_data = array(
-							'sn' => $user['screen_name'],
-							'sx' => $user['gender'],
-							'vi' => $user['verified_reason'],
-							'de' => $user['description'],
-							'ad' => $user['address'],
-							'bl' => $user['url'],
-							'un' => $user['name'],
-							'an' => $user['friends_count'],
-							'fn' => $user['followers_count'],
-							'mn' => $user['statuses_count'],
-							'iu' => $user['profile_image_url'],
-							'iv' => $user['verified'],
-							'at' => $user['created_at'],
-							'ti' => $user['ti'],
-							'fui' => $this->get_friends_ids()
-							);
-
-		$CI->load->model('Hit_UserModel', array('uid'=>$this->_uid));
-		if($CI->Hit_UserModel->exist_user()){ // This user exists. Then update user's information.
-			return $CI->Hit_UserModel->update($ary_query_data, array('uid'=>$this->_uid));
-		} else { // Insert user's information.
-			$ary_query_data['uid'] = $this->_uid;
-			return $CI->Hit_UserModel->insert($ary_query_data);
+		if( $user != NULL) {
+			$ary_query_data = array(
+				'sn' => $user['screen_name'],
+				'sx' => $user['gender'],
+				'vi' => $user['verified_reason'],
+				'de' => $user['description'],
+				'ad' => $user['address'],
+				'bl' => $user['url'],
+				'un' => $user['name'],
+				'an' => $user['friends_count'],
+				'fn' => $user['followers_count'],
+				'mn' => $user['statuses_count'],
+				'iu' => $user['profile_image_url'],
+				'iv' => $user['verified'],
+				'at' => $user['created_at'],
+				'ti' => $user['ti'],
+				'fui' => $this->get_friends_ids()
+			);
+		
+			$CI->load->model('Hit_UserModel', array('uid'=>$this->_uid));
+			if($CI->Hit_UserModel->exist_user()){ // This user exists. Then update user's information.
+				return $CI->Hit_UserModel->update($ary_query_data, array('uid'=>$this->_uid));
+			} else { // Insert user's information.
+				$ary_query_data['uid'] = $this->_uid;
+				$ary_query_data['last_login'] = '0000-00-00 00:00:00';
+				return $CI->Hit_UserModel->insert($ary_query_data);
+			}
 		}
 	}
 
@@ -72,10 +89,12 @@ class Hit_UserOnline {
 		$CI->load->helper('date');
 		
 		$user = $this->_saetclient->show_user_by_id($this->_uid);
-		$user['address'] = (string)$user['province'] . ' ' . (string)$user['city'];
-		$user['verified'] = $user['verified'] ? 1 : 0;
-		$user['created_at'] = standard_date('DATE_ATOM', strtotime($user['created_at']));
-		$user['ti'] = standard_date('DATE_ATOM');
+		if( $user != NULL ){
+			$user['address'] = (string)$user['province'] . ' ' . (string)$user['city'];
+			$user['verified'] = $user['verified'] ? 1 : 0;
+			$user['created_at'] = standard_date('DATE_ATOM', strtotime($user['created_at']));
+			$user['ti'] = standard_date('DATE_ATOM');
+		}
 		return $user;
 	}
 

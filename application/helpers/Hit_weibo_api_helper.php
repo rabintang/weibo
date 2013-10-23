@@ -25,3 +25,16 @@ if( ! function_exists('get_integrated_status'))
 		return $status_text;
 	}
 }
+
+if( ! function_exists('get_authorize_url') )
+{
+	function get_authorize_url()
+	{
+		$CI = & get_instance();
+		$CI->load->library('Hit_SaeTOAuth');
+		$state = uniqid( 'hitweibo_', true);
+		$CI->session->set_userdata('weibo_state',$state);
+		$authorize_url = $CI->hit_saetoauth->get_authorize_url('code', $state);
+		return $authorize_url;
+	}
+}

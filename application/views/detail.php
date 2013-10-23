@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  	<title>自然语言处理-知识推荐</title>
+  	<title><?=$abbre["kl"];?>-知识推荐</title>
 	<base href="<?=get_assets_base_url();?>" />
   	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
   	<link href="css/base.css" type="text/css" rel="stylesheet">
@@ -33,7 +33,24 @@
 					      	<span class="span3"><?=$abbre["st"];?></span> <span class="span2">)</span>
 					    </div>
 					    <div class="title_share_button">
-					      	<a href="main.php" ><img src="img/title_share_button.gif"  class="share_image"></a>
+					      	<script type="text/javascript" charset="utf-8">
+						var _w = 106 , _h = 58;
+						   var param = {
+							url:location.href,
+						    type:'6',
+			    			    count:'', /**是否显示分享数，1显示(可选)*/
+			    			    appkey:'244566215', /**您申请的应用appkey,显示分享来源(可选)*/
+			    			    title:'我正在使用微博词条，发现微博中的新知识，成为知识达人，你也快来试试吧！', /**此处的分享应与词条相关*/
+			    			    pic:'', /**分享图片的路径(可选)*/
+			    			    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+			    			    rnd:new Date().valueOf()
+																								    			  }
+						  var temp = [];
+			  			  for( var p in param ){
+			  			    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+			    			  }
+						  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+			  			</script>
 					    </div>
 			      	</div>
 				  	<div class="explain">

@@ -13,6 +13,8 @@ class Hit_WbRecommender
 		$ci = & get_instance();
 		$ci->load->model('Hit_WeibomsgModel');
 		$this->_weibo = $ci->Hit_WeibomsgModel;
+		$ci->load->helper('Hit_datetime');
+		$ci->load->helper('Hit_config');
 	}
 
 	/**
@@ -23,16 +25,52 @@ class Hit_WbRecommender
 	 */
 	public function recommend_brif($abrid, $count, $fui)
 	{
+		$CI = & get_instance();
+		$friend_time_interval = (int)get_config_value('friend_time_interval') * -1;
+		$conditions = "uid IN (" . $fui . ") AND mid IN (SELECT mid FROM `abbre_weibomsg` WHERE abrid="
+				. $abrid . ") ";
+		if($friend_time_interval != 0){
+			$conditions = $conditions . " AND pt>='" . add_interval($friend_time_interval) . "'";
+		}
+		
 		$ary_wb = $this->_weibo->select(array(
-					'fields' => 'mid,uid,sn,mc,murl,pt',
-					'conditions' => 'uid IN (' . $fui . ') AND mid IN (SELECT mid FROM `abbre_weibomsg` WHERE abrid=' . $abrid . ')',
-					'groupby' => 'mid',
-					'orderby' => array('pt'=>'DESC','mid'=>'DESC'),
-					'limit' => $count
-					));
+			'fields' => 'mid,uid,sn,mc,murl,pt',
+			'conditions' => $conditions,
+			'groupby' => 'mid',
+			'orderby' => array('pt'=>'DESC','mid'=>'DESC'),
+			'limit' => $count
+		));
+
+		
+		if(count($ary_wb) < $count){
+			$mids = '';
+			$common_time_interval = (int)get_config_value('common_time_interval') * -1;
+			$count = $count - count($ary_wb);
+			if(count($ary_wb) > 0){
+				$mids = "mid NOT IN ('";
+				foreach($ary_wb as $wb){
+					$mids .= $wb['mid'] . "','";
+				}
+				$mids = rtrim($mids, ',');
+				$mids .= "') AND ";
+			}
+			$conditions = $mids . "mid IN (SELECT mid FROM `abbre_weibomsg` WHERE abrid=" 
+				. $abrid . ") ";
+			if($common_time_interval != 0){
+				$conditions = $conditions . " AND pt>='" . add_interval($common_time_interval) . "'";
+			}
+			$ary_wb_2 = $this->_weibo->select( array(
+				'fields' => 'mid,uid,sn,mc,murl,pt',
+				'conditions' => $conditions,
+				'groupby' => 'mid',
+				'orderby' => array('pt'=>'DESC','mid'=>'DESC'),
+				'limit' => $count
+				), False );
+			$ary_wb = array_merge($ary_wb, $ary_wb_2);
+		}
 		$ary_wb_brif = array();
 		foreach($ary_wb as $wb){
-			$ary_wb_brif[] = $this->_handle_wbmsg($wb);
+			$ary_wb_brif[] = $this->handle_wbmsg($wb);
 		}
 		return $ary_wb_brif;
 	}
@@ -83,16 +121,22 @@ class Hit_WbRecommender
 	 * @param  string $kl  词条名称
 	 * @return string      处理好的词条字符串
 	 */
-	private function _handle_wbmsg($row,$kl=NULL)
+	private function handle_wbmsg($row, $kl=NULL)
 	{
 		$CI = & get_instance();
 		$CI->load->helper('Hit_string');
-
-		$totallen = 110; //The length of a line(including screen name, microblog message, publish time).
+		$totallen = get_config_value('main_wb_item_length');
+		if( ! $totallen ){
+			$totallen = 110; //The length of a line(including screen name, microblog message, publish time).
+		}
 		$restlen = $totallen - UTF8_length($row["sn"]) - strlen($row['pt']);
 		$str = "<div class='weibo'><div class='weibo_blogger'><a href='http://www.weibo.com/{$row["uid"]}'";
 		$str = $str." target='_blank'>{$row["sn"]}</a>: </div><div class='weibo_content'><span>";
-		$str .= UTF8_substr($row['mc'],0,$restlen) . '...';
+		if(UTF8_length($row['mc']) > $restlen){
+			$str .= UTF8_substr($row['mc'],0,$restlen) . '...';
+		} else {
+			$str .= $row['mc'];
+		}
 		if(!empty($row['murl'])){
 			$str = $str."<a href='{$row["murl"]}' target='_blank'><font color='#0082D1'>[详见]</font></a>";
 		}

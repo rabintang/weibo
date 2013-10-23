@@ -59,6 +59,22 @@ class Hit_UserModel extends Hit_Model
 	}
 
 	/**
+	 * 更新用户的最近登录时间
+	 */
+	public function update_last_login($uid = NULL)
+	{
+		if( ! $this->string_condition($uid) ){
+			if($this->string_condition($this->_uid)){
+				$uid = $this->_uid;
+			} else {
+				return FALSE;
+			}
+		}
+		$now = date("Y-m-d H:i:m");
+		return $this->update(array('last_login'=>$now), array('uid'=>$uid));		
+	}
+	
+	/**
 	 * 更新用户信息
 	 * @param  array $user 包含用户信息的关联数组
 	 * @return bool 更新成功返回True，否则返回False

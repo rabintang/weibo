@@ -160,7 +160,7 @@ if( ! function_exists('get_relate_abbres'))
 					$str .= '<span class="split_font"> | </span>';
 				}
 				$first_flag = FALSE;
-				$str .= "<a href='". site_url("detail/index/{$relate_abbre['abrid']}") . "'>{$relate_abbre['kl']}</a>";
+				$str .= "<a href='". site_url("detail/index/{$relate_abbre['abrid']}") . "' target='_blank'>{$relate_abbre['kl']}</a>";
 			}
 			$str .= '</div>';
 		}

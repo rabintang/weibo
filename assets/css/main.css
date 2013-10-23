@@ -83,6 +83,7 @@ a.detail:hover{
 
 .content_a p {
 	color:#333333;
+	padding:0px 5px 0px 0px;
 }
 
 .content_a p span {
@@ -431,6 +432,21 @@ input, textarea, select, option {
 }
 /*分页结束*/
 
+/* bof top n */
+.top_n{
+	padding:0px;
+	margin-top:10px;
+	border-left:none;
+	border-right:none;
+	border-bottom:none;
+	border-color:#e6e6e6;
+}
+.top_n legend{
+	color:#aeaeae;
+	font-weight:400;
+	font-size:14px;
+}
+/* eof top n */
 /*目录开始*/
 .box_right {
 	width:210px;

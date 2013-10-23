@@ -3,7 +3,7 @@
 /**
  * 系统主页面
  */
-class Main extends CI_Controller
+class Main extends Hit_Controller
 {
 	// 参数在URL中的位置(第几段)
 	const INDEX_CATEGORY = 3;
@@ -24,6 +24,14 @@ class Main extends CI_Controller
 		$this->load->library('Hit_KlgRecommender', array('uid'=>get_session('uid')));
 		$this->load->library('Hit_WbRecommender');
 		
+		$recommend_top_n = get_session('recommend_top_n');
+		if($recommend_top_n == 'true'){
+			$top_n_abbres = $this->hit_klgrecommender->recommend_top_n();
+			
+			$this->session->set_userdata('recommend_top_n', 'false');
+			$this->Hit_UserModel->update_last_login();
+		}
+		
 		// 获取URL参数
 		$category = $this->uri->segment(Main::INDEX_CATEGORY, 0);
 		$lpagenum = $this->uri->segment(Main::INDEX_LPAGENUM, 1);
@@ -39,11 +47,11 @@ class Main extends CI_Controller
 		$total_rows = $this->Hit_AbbreviationModel->get_relate_rows_num(array('fui'=>$fui,'conditions'=>$conditions));
 		$url_template = 'main/index/' . $category . '/{%s}/' . $rpagenum;
 		$params = array(
-					'url_template' => site_url($url_template),
-					'total_rows' => $total_rows,
-					'pagesize' => get_config_value('main_klg_pagination_pagesize'),
-					'cur_page' => $lpagenum
-					);
+			'url_template' => site_url($url_template),
+			'total_rows' => $total_rows,
+			'pagesize' => get_config_value('main_klg_pagination_pagesize'),
+			'cur_page' => $lpagenum
+		);
 		$this->load->library('Hit_Pagination',$params);
 		$str_pagination = $this->hit_pagination->create_links();
 
@@ -59,19 +67,37 @@ class Main extends CI_Controller
 				$ary_blogger = $this->hit_wbrecommender->recommend_blogger($abbre['abrid'], $relate_blogger_count);
 				$ary_relate_abbres = $this->hit_klgrecommender->recommend_relate_abbre($abbre['abrid'], $relate_abbre_count);
 				$ary_items[] = array(
-							'abbre'=>$abbre, 
-							'wb_brif'=>$ary_wb_brif,
-							'bloggers'=>$ary_blogger,
-							'relate_abbres'=>$ary_relate_abbres
-							);
+					'abbre'=>$abbre, 
+					'wb_brif'=>$ary_wb_brif,
+					'bloggers'=>$ary_blogger,
+					'relate_abbres'=>$ary_relate_abbres
+				);
+			}
+		}
+
+		if(isset($top_n_abbres) && count($top_n_abbres) > 0){ // 构造待推荐 top n 词条
+			$ary_top_n = array();
+			foreach($top_n_abbres as $abbre){
+				$ary_wb_brif = $this->hit_wbrecommender->recommend_brif($abbre['abrid'], $relate_status_count, $fui);
+				$ary_blogger = $this->hit_wbrecommender->recommend_blogger($abbre['abrid'], $relate_blogger_count);
+				$ary_relate_abbres = $this->hit_klgrecommender->recommend_relate_abbre($abbre['abrid'], $relate_abbre_count);
+				$ary_top_n[] = array(
+					'abbre'=>$abbre, 
+					'wb_brif'=>$ary_wb_brif,
+					'bloggers'=>$ary_blogger,
+					'relate_abbres'=>$ary_relate_abbres
+				);
 			}
 		}
 		$box_right = get_box_right($rpagenum);
 		$data = array(
-				'pagination' => $str_pagination,
-				'items' => $ary_items,
-				'box_right' => $box_right
-				);
+			'pagination' => $str_pagination,
+			'items' => $ary_items,
+			'box_right' => $box_right
+		);
+		if( isset($ary_top_n) && count($ary_top_n) > 0 ){
+			$data['top_n'] = $ary_top_n;
+		}
 		$this->load->auto_view('main', $data);
 	}
 }
