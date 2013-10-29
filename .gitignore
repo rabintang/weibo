@@ -1,2 +1,7 @@
-application/config/
+application/config/config.php
+application/config/database.php
+application/logs/
+application/views/index.php
+application/controllers/callback.php
 snippet_extract/
+
