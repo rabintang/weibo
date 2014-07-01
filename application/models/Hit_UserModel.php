@@ -9,7 +9,7 @@ class Hit_UserModel extends Hit_Model
 
 	function __construct($params = NULL)
 	{
-		parent::__construct('userlist');
+		parent::__construct('user');
 		$this->_uid = isset($params['uid']) ? (string)$params['uid'] : NULL;
 	}
 
@@ -18,7 +18,7 @@ class Hit_UserModel extends Hit_Model
 	 * @param string $uid 被查询的用户ID，不指定则查询当前用户
 	 * @return bool 存在返回true，否则返回false
 	 */
-	public function exist_user($uid = NULL)
+	public function exists($uid = NULL)
 	{
 		if($uid == NULL && $this->_uid != NULL) {
 			$uid = $this->_uid;
@@ -41,10 +41,10 @@ class Hit_UserModel extends Hit_Model
 	 * @param  string $uid 用户ID,没有则获取当前用户
 	 * @return string      fui字段值,失败返回false
 	 */
-	public function get_fui($uid = NULL)
+	public function fui($uid = NULL)
 	{
-		if( ! $this->string_condition($uid)){
-			if($this->string_condition($this->_uid)) {
+		if( ! $this->_stringCondition($uid)){
+			if($this->_stringCondition($this->_uid)) {
 				$uid = $this->_uid;
 			} else {
 				return FALSE;
@@ -61,17 +61,17 @@ class Hit_UserModel extends Hit_Model
 	/**
 	 * 更新用户的最近登录时间
 	 */
-	public function update_last_login($uid = NULL)
+	public function updateLogoutTime($uid = NULL)
 	{
-		if( ! $this->string_condition($uid) ){
-			if($this->string_condition($this->_uid)){
+		if( ! $this->_stringCondition($uid) ){
+			if($this->_stringCondition($this->_uid)){
 				$uid = $this->_uid;
 			} else {
 				return FALSE;
 			}
 		}
 		$now = date("Y-m-d H:i:m");
-		return $this->update(array('last_login'=>$now), array('uid'=>$uid));		
+		return $this->update(array('lastlogin'=>$now), array('uid'=>$uid));		
 	}
 	
 	/**
@@ -81,7 +81,7 @@ class Hit_UserModel extends Hit_Model
 	 */
 	/*public function update($user, $condition = NULL){
 		if($user) {
-			if(!$this->string_condition($condition)){
+			if(!$this->_stringCondition($condition)){
 
 			}
 			if(!isset($user['uid'])) {
@@ -94,7 +94,7 @@ class Hit_UserModel extends Hit_Model
 					parent::update($user, $condition);
 				}
 			} catch(Exception $e) {
-				log_message('error', 'On update ' . $user['sn'] . ':' . $e->getMessage());
+				log_message('error', 'On update ' . $user['un'] . ':' . $e->getMessage());
 				return False;
 			}
 		}
@@ -113,7 +113,7 @@ class Hit_UserModel extends Hit_Model
 				$this->db->query($sql_insert);
 				return $this->db->affected_rows() > 0 ? True : False;
 			} catch(Exception $e) {
-				log_message('error', 'On insert ' . $user['sn'] . ':' . $e->getMessage());
+				log_message('error', 'On insert ' . $user['un'] . ':' . $e->getMessage());
 				return False;
 			}
 		}

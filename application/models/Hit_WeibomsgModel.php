@@ -17,13 +17,13 @@ class Hit_WeibomsgModel extends Hit_Model {
 	 * @param  bool $escape 是否给字段或表明加反引号
 	 * @return array         微博列表
 	 */
-	public function select_user_relate($params = array(), $escape=TRUE)
+	public function selectFolloweeMsgs($params = array(), $escape=TRUE)
 	{
-		if(isset($params['fui']) && $this->string_condition($params['fui'])){
-			if(isset($params['conditions']) && $this->string_condition($params['conditions'])){
-				$params['conditions'] = $this->get_relate_sub_select($params['fui']) . ' AND ' . $params['conditions'];
+		if(isset($params['fui']) && $this->_stringCondition($params['fui'])){
+			if(isset($params['conditions']) && $this->_stringCondition($params['conditions'])){
+				$params['conditions'] = $this->correlateSubSelect($params['fui']) . ' AND ' . $params['conditions'];
 			} else {
-				$params['conditions'] = $this->get_relate_sub_select($params['fui']);
+				$params['conditions'] = $this->correlateSubSelect($params['fui']);
 			}
 			unset($params['fui']);
 		} else {
@@ -37,9 +37,9 @@ class Hit_WeibomsgModel extends Hit_Model {
 	 * @param  string $fui 用户关注列表ID
 	 * @return string      子查询
 	 */
-	protected function get_relate_sub_select($fui)
+	protected function correlateSubSelect($fui)
 	{
-		if($this->string_condition($fui)){
+		if($this->_stringCondition($fui)){
 			$subselect = "mid IN (SELECT mid FROM `weibomsg` WHERE uid IN ({$fui}))";
 			return $subselect;
 		}

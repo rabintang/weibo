@@ -20,7 +20,7 @@ class Hit_OutSourceModel extends Hit_Model
 	public function select_abbre_relate($params = array())
 	{
 		if(isset($params['abrid'])){
-			if(isset($params['conditions']) && $this->string_condition($params['conditions'])){
+			if(isset($params['conditions']) && $this->_stringCondition($params['conditions'])){
 				$params['conditions'] = "osid IN (SELECT osid FROM `abbre_outs` WHERE abrid={$params['abrid']}" 
 					. ' AND ' . $params['conditions'];
 			} else {

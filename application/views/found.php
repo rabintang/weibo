@@ -8,7 +8,7 @@
   	<link href="css/main.css" type="text/css" rel="stylesheet">
 	<link href="css/pagination.css" type="text/css" rel="stylesheet">
   	<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-  	<script type="text/javascript" src="js/main.js"></script>
+  	<script type="text/javascript" src="js/global.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$(".pagination").children("a").each(function(){
@@ -19,12 +19,15 @@
 </head>
 <body>
 <div class="all">
-  	<?=$head;?>	
-  	<div class="middle">
+  	<?=$head;?>
 	<form id="sword" name="sword" action="<?=site_url("search/index");?>" method="post" target="_self">
 	    <input name="word" type="text" value="<?=$key_word?>" style="display:none;" />
 	</form>
+  	<div class="middle">
 	<!-- bof 页面中部 -->
+	<form name="recordActionFrm" id="recordActionFrm" method="post" action='detail'>
+		<input id="sourceField" type="hidden" name="source" value="">
+	</form>
 	<div class="main_wrap">
 		<!-- bof 词条列表 -->		
 		<div class="main">
@@ -37,12 +40,16 @@
 			foreach($items as $item) {?>
 		  	<!-- bof 词条 -->
 		  	<div class="voc_main" id="voc1">
-			<div class="content_a">
-				<p><a href='<?=site_url("detail/index/{$item['abbre']["abrid"]}");?>'><span><?=$item['abbre']["kl"];?></span></a>
+			<div class="content_a"><?php
+				$output = "<p><a onclick=\"javascript:recordAction('" . site_url("detail/index/" .
+					$item['abbre']['abrid']) . "', 'searchfound');return false;\"/>";
+				echo $output;
+			?>
+			<span><?=$item['abbre']["kl"];?></span></a>
 				&nbsp;&nbsp;<?=$item['abbre']["bf"];?></p>
 			</div><?php
 			if(isset($item['relate_abbres'])) {
-				echo get_relate_abbres($item['relate_abbres']);
+				echo get_relate_abbres($item['relate_abbres'], 'searchfound');
 			}?>
 			<?=get_wk_bk($item['abbre']['wk'], $item['abbre']['bk']);?>
 			<!-- bof 微博列表 -->

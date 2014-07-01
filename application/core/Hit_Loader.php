@@ -117,7 +117,7 @@ class Hit_Loader extends CI_Loader
 	{
 		$CI = & get_instance();
 		$CI->load->model('Hit_CategoryModel','category');
-		$ary_categories = $CI->Hit_CategoryModel->select(array('fields' => 'cgid, cgn'));
+		$ary_categories = $CI->Hit_CategoryModel->select(array('fields' => 'categoryid, name'));
 		$vars['head'] = $CI->load->view('modules/head', array('categories'=>$ary_categories), TRUE);
 		$vars['foot'] = $CI->load->view('modules/foot', NULL, TRUE);
 		return $CI->load->view($view, $vars, $return);

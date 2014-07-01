@@ -11,7 +11,7 @@
           <li><a href="<?=site_url('main/index');?>" >全部</a></li><?php
             foreach($categories as $category) {?>
               <li class="split_font_cat">|</li>
-              <li class="category"><a href='<?=site_url("main/index/{$category['cgid']}");?>' ><?=$category['cgn'];?></a></li><?php
+              <li class="category"><a href='<?=site_url("main/index/{$category['categoryid']}");?>' ><?=$category['name'];?></a></li><?php
             }?>
         </ul>
       </div>
@@ -25,7 +25,7 @@
       </div>
       <div class="share_button">
 	  <script type="text/javascript" charset="utf-8">
-	   var _w = 106 , _h = 58;
+	   var _w = 100 , _h = 22;
 	   var param = {
 	     url:location.href,
 	     type:'5',
@@ -44,7 +44,7 @@
   	</script> 
       </div>
       <div class="uname">
-        <span class="uname_font"><a href="http://www.weibo.com/<?=get_session('uid')?>" target="_blank"><?=get_session('user/sn');?></a></span>
+        <span class="uname_font"><a href="http://www.weibo.com/<?=get_session('uid')?>" target="_blank"><?=get_session('user/un');?></a></span>
         <span class="split_font">|</span>
         <a href="<?=site_url('user/login_out');?>">
           <span class="exit_font">退出</span>

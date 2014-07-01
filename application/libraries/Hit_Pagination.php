@@ -47,7 +47,7 @@ class Hit_Pagination{
 		}
 	}
 
-	public function create_links()
+	public function generatePagination()
 	{
 		/* Setup page vars for display. */
 		$prev = 1;

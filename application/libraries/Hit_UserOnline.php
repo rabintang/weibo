@@ -52,7 +52,6 @@ class Hit_UserOnline {
 		$user = $this->get_user_info();
 		if( $user != NULL) {
 			$ary_query_data = array(
-				'sn' => $user['screen_name'],
 				'sx' => $user['gender'],
 				'vi' => $user['verified_reason'],
 				'de' => $user['description'],

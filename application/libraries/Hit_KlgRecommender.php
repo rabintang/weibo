@@ -121,9 +121,9 @@ class Hit_KlgRecommender
 				$ci->hit_abbreviationmodel->update();
 			}
 			// 插入数据到 weibomsg 数据库表
-			$ci->hit_weibomsgmodel->insert_batch($ary_status_batch);
+			$ci->hit_weibomsgmodel->insertBatch($ary_status_batch);
 			// 插入数据到 abbre_weibomsg 数据库表
-			$ci->hit_abbreweibomsgmodel->insert_batch($ary_mapping_batch);
+			$ci->hit_abbreweibomsgmodel->insertBatch($ary_mapping_batch);
 
 			return TRUE;
 		}

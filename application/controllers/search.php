@@ -3,7 +3,7 @@
 /**
  * 搜索结果页
  */
-class Search extends CI_Controller
+class Search extends Hit_Controller
 {
 	const INDEX_LPAGENUM = 3;
 	const INDEX_RPAGENUM = 4;
@@ -13,26 +13,19 @@ class Search extends CI_Controller
 	{
 		parent::__construct();
 
-		$this->load->helper('Hit_session');
 		$this->load->helper('Hit_config');
-
-		$this->session->set_userdata('uid', '2100610530');
 	}
 
 	public function index()
 	{
 		$this->load->model('Hit_AbbreviationModel');
 		$key_word = $this->input->post('word');
-		if( ! $key_word) {
-			$key_word = get_session('key_word');
-		}
+
 		if( ! $key_word){ // 跳转到404
 			show_404('关键词不能为空');
-		} else {
-			$this->session->set_userdata('key_word', $key_word);
 		}
 
-		$rows_num = $this->Hit_AbbreviationModel->get_rows_num(array(
+		$rows_num = $this->Hit_AbbreviationModel->getRowsNum(array(
 					'like' => array('likes'=>array('kl'=>$key_word),'type'=>'both')
 					));
 

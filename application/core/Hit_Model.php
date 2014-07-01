@@ -38,10 +38,10 @@ class Hit_Model extends CI_Model
 	 * @param  string $condition_field 条件域
 	 * @return int/bool 更新成功返回受影响的行数，否则返回false
 	 */
-	public function update_batch($instances, $condition_field)
+	public function updateBatch($instances, $condition_field)
 	{
 		try{
-			$this->db->update_batch($this->table_name, $instances, $condition_field);
+			$this->db->updateBatch($this->table_name, $instances, $condition_field);
 			return $this->db->affected_rows();
 		} catch(Exception $e) {
 			log_message('error', 'In batch update ' . $this->table_name . ': ' . $e->getMessage());
@@ -72,10 +72,10 @@ class Hit_Model extends CI_Model
 	 * @param  array $instances 待插入数据集的数组
 	 * @return int/bool 插入成功返回受影响的行数，否则返回false
 	 */
-	public function insert_batch($instances)
+	public function insertBatch($instances)
 	{
 		try{
-			$this->db->insert_batch($this->table_name, $instances);
+			$this->db->insertBatch($this->table_name, $instances);
 			return $this->db->affected_rows();
 		} catch(Exception $e) {
 			log_message('error', 'In batch insert ' . $this->table_name . ': ' . $e->getMessage());
@@ -106,9 +106,9 @@ class Hit_Model extends CI_Model
 		try{
 			// 处理待查询字段
 			if(isset($params['fields'])){
-				if($this->string_condition($params['fields'])) {
+				if($this->_stringCondition($params['fields'])) {
 					$this->db->select($params['fields'], $escape);
-				} else if($this->array_condition($params['fields'])) {
+				} else if($this->_arrayCondition($params['fields'])) {
 					$str_fields = implode(',', $params['fields']);
 					$this->db->select($params['fields'], $escape);
 				}
@@ -141,22 +141,22 @@ class Hit_Model extends CI_Model
 
 			// 处理排序
 			if(isset($params['orderby'])){
-				if($this->array_condition($params['orderby'])){
+				if($this->_arrayCondition($params['orderby'])){
 					foreach($params['orderby'] as $field=>$method) {
 						$this->db->order_by($field, $method);
 					}
-				} else if($this->string_condition($params['orderby'])){
+				} else if($this->_stringCondition($params['orderby'])){
 					$this->db->order_by($params['orderby']);
 				}
 			}
 			
 			// 处理返回记录条数，limit子句
 			if(isset($params['limit'])){
-				if($this->integer_condition($params['limit'])){
+				if($this->_integerCondition($params['limit'])){
 					if($params['limit'] > 0){
 						$this->db->limit($params['limit']);
 					}
-				} else if($this->array_condition($params['limit'])) {
+				} else if($this->_arrayCondition($params['limit'])) {
 					if(sizeof($params['limit']) >= 2){
 						$this->db->limit($params['limit'][1], $params['limit'][0]);
 					} else {
@@ -191,7 +191,7 @@ class Hit_Model extends CI_Model
 	 * @param  bool $escape 是否给字段或表明加反引号
 	 * @return integer             行数,查询失败返回false
 	 */
-	public function get_rows_num($params = array(), $escape = TRUE)
+	public function getRowsNum($params = array(), $escape = TRUE)
 	{
 		try{
 			if(isset($params['conditions'])){
@@ -224,7 +224,7 @@ class Hit_Model extends CI_Model
 
 
 	/*返回最新执行的一条SQL语句*/
-	public function get_last_query()
+	public function getLastQuery()
 	{
 		return $this->db->last_query();
 	}
@@ -234,7 +234,7 @@ class Hit_Model extends CI_Model
 	 * @param  [type] $condition 待判断的条件
 	 * @return bool 是返回true，否则返回false
 	 */
-	protected function string_condition($condition)
+	protected function _stringCondition($condition)
 	{
 		if($condition && is_string($condition) && trim($condition) != '') {
 			return TRUE;
@@ -247,7 +247,7 @@ class Hit_Model extends CI_Model
 	 * @param  [type] $condition 待判断的条件
 	 * @return bool 是返回true，否则返回false
 	 */
-	protected function array_condition($condition)
+	protected function _arrayCondition($condition)
 	{
 		if($condition && is_array($condition) && sizeof($condition) > 0) {
 			return TRUE;
@@ -260,7 +260,7 @@ class Hit_Model extends CI_Model
 	 * @param  [type] $condition 待判断的条件
 	 * @return bool 是返回true，否则返回false
 	 */
-	protected function integer_condition($condition)
+	protected function _integerCondition($condition)
 	{
 		if($condition && is_integer($condition)) {
 			return TRUE;

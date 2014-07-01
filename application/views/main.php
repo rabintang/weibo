@@ -7,13 +7,16 @@
 	<link href="css/base.css" type="text/css" rel="stylesheet">
 	<link href="css/main.css" type="text/css" rel="stylesheet">
 	<link href="css/pagination.css" type="text/css" rel="stylesheet">
-	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/global.js"></script>
 </head>
 <body>
 <div class="all">
   	<?=$head;?>
 	<div class="middle">
 		<!-- bof 页面中部 -->
+		<form name="recordActionFrm" id="recordActionFrm" method="post" action='detail'>
+			<input id="sourceField" type="hidden" name="source" value="">
+		</form>
 		<div class="main_wrap">
 			<!-- bof 词条列表 -->	
 			<div class="main"><?php
@@ -23,39 +26,39 @@
 					<!-- bof 词条 -->
 				  	<div class="voc_main" id="voc1">
 						<div class="content_a">
-							<p><a href='<?=site_url("detail/index/{$item['abbre']['abrid']}");?>' target="_blank"><?=$item['abbre']['kl'];?></a>
-								&nbsp;&nbsp;<?=$item['abbre']['bf'];?></p>
+							<p><a href='<?=site_url("detail/index/{$item['entry']['entryid']}");?>' target="_blank"><?=$item['entry']['name'];?></a>
+								&nbsp;&nbsp;<?=$item['entry']['description'];?></p>
 						</div>
 						<br style="clear:both;"/><?php
-						if(isset($item['relate_abbres'])) {
-							echo get_relate_abbres($item['relate_abbres']);
+						if(isset($item['correlate_entries'])) {
+							echo get_correlate_entries($item['correlate_entries'], 'mtrecomm');
 						}?>
-						<?=get_wk_bk($item['abbre']['wk'], $item['abbre']['bk']);?>
+						<?=get_wiki_and_baike($item['entry']['wiki'], $item['entry']['baike']);?>
 						<!-- bof 微博列表 -->
 						<div class="main_weibo">
 						  	<div class="weibo_tittle">
 								<span >相关微博: </span><?php
 		   							if(isset($item['bloggers'])){
-		    						    		echo get_relate_blogger($item['bloggers']);
+		    						    echo get_correlate_bloggers($item['bloggers']);
 									}?>
 						  	</div><?php 
-						  	if(isset($item['wb_brif']) && sizeof($item['wb_brif']) > 0) {?>
+						  	if(isset($item['blog']) && sizeof($item['blog']) > 0) {?>
 						  		<div class="weibo_tittle_sep">
 						  			<div class="weibo_tittle_sep_line"></div>
 						  		</div><?php
-						  		$first_flag = TRUE;
-						  		foreach($item['wb_brif'] as $wb_brif){
-						  			if( ! $first_flag) {
+						  		$is_first = TRUE;
+						  		foreach($item['blog'] as $blog){
+						  			if( ! $is_first ) {
 						  				echo '<div class="weibo_sep"><div class="weibo_sep_line"></div></div>';
 						  			}
-						  			$first_flag = FALSE;
-						  			echo $wb_brif;
+						  			$is_first = FALSE;
+						  			echo $blog;
 						  		}
 							}?>
 						</div>
 						<!-- eof 微博列表 -->
 						<div class="voc_foot">
-							<div class="voc_foot_time"><?=$item['abbre']['pt'];?></div>
+							<div class="voc_foot_time"><?=$item['entry']['publishtime'];?></div>
 							<div class="voc_foot_option">
 				                        	<span class="tweet-viewpoint">
 	    							   	<a class="tweet-praise" href="javascript:;" title="顶并转发" data-type="top">
@@ -80,40 +83,43 @@
 			foreach($items as $item) {?>
 				<!-- bof 词条 -->
 			  	<div class="voc_main" id="voc1">
-					<div class="content_a">
-						<p><a href='<?=site_url("detail/index/{$item['abbre']['abrid']}");?>'><?=$item['abbre']['kl'];?></a>
-						&nbsp;&nbsp;<?=$item['abbre']['bf'];?></p>
+					<div class="content_a"><?php
+						$output = "<p><a onclick=\"javascript:recordAction('" . site_url("detail/index/" .
+							$item['entry']['entryid']) . "', 'mainlist');return false;\"/>";
+						echo $output;
+					?><?=$item['entry']['name'];?></a>
+						&nbsp;&nbsp;<?=$item['entry']['description'];?></p>
 					</div>
 					<br style="clear:both;"/><?php
-					if(isset($item['relate_abbres'])) {
-						echo get_relate_abbres($item['relate_abbres']);
+					if(isset($item['correlate_entries'])) {
+						echo get_correlate_entries($item['correlate_entries'], 'main');
 					}?>
-					<?=get_wk_bk($item['abbre']['wk'], $item['abbre']['bk']);?>
+					<?=get_wiki_and_baike($item['entry']['wiki'], $item['entry']['baike']);?>
 					<!-- bof 微博列表 -->
 					<div class="main_weibo">
 					  	<div class="weibo_tittle">
 						    <span >相关微博: </span><?php
 						    if(isset($item['bloggers'])){
-						    	echo get_relate_blogger($item['bloggers']);
+						    	echo get_correlate_bloggers($item['bloggers']);
 							}?>
 					  	</div><?php 
-					  	if(isset($item['wb_brif']) && sizeof($item['wb_brif']) > 0) {?>
+					  	if(isset($item['blogs']) && sizeof($item['blogs']) > 0) {?>
 					  		<div class="weibo_tittle_sep">
 					  			<div class="weibo_tittle_sep_line"></div>
 					  		</div><?php
-					  		$first_flag = TRUE;
-					  		foreach($item['wb_brif'] as $wb_brif){
-					  			if( ! $first_flag) {
+					  		$is_first = TRUE;
+					  		foreach($item['blogs'] as $blogs){
+					  			if( ! $is_first ) {
 					  				echo '<div class="weibo_sep"><div class="weibo_sep_line"></div></div>';
 					  			}
-					  			$first_flag = FALSE;
-					  			echo $wb_brif;
+					  			$is_first = FALSE;
+					  			echo $blogs;
 					  		}
 						}?>
 					</div>
 					<!-- eof 微博列表 -->
 					<div class="voc_foot">
-						<div class="voc_foot_time"><?=$item['abbre']['pt'];?></div>
+						<div class="voc_foot_time"><?=$item['entry']['publishtime'];?></div>
 						<div class="voc_foot_option">
                             <span class="tweet-viewpoint">
 							   	<a class="tweet-praise" href="javascript:;" title="顶并转发" data-type="top">
@@ -191,7 +197,7 @@
 			</div>
 			<!-- eof 词条列表 -->
 			
-			<?=$box_right;?>
+			<?=$right_box;?>
 		</div>
 	</div>
 	<span style="clear:both;"></span>

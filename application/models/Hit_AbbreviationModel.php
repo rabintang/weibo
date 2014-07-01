@@ -24,8 +24,8 @@ class Hit_AbbreviationModel extends Hit_Model
 	 */
 	public function select_user_relate($params = array(), $escape=TRUE)
 	{
-		if(isset($params['fui']) && $this->string_condition($params['fui'])){
-			if(isset($params['conditions']) && $this->string_condition($params['conditions'])){
+		if(isset($params['fui']) && $this->_stringCondition($params['fui'])){
+			if(isset($params['conditions']) && $this->_stringCondition($params['conditions'])){
 				$params['conditions'] = $this->get_relate_sub_select($params['fui']) . ' AND ' . $params['conditions'];
 			} else {
 				$params['conditions'] = $this->get_relate_sub_select($params['fui']);
@@ -46,8 +46,8 @@ class Hit_AbbreviationModel extends Hit_Model
 	 */
 	public function get_relate_rows_num($params = array(), $escape=TRUE)
 	{
-		if(isset($params['fui']) && $this->string_condition($params['fui'])){
-			if(isset($params['conditions']) && $this->string_condition($params['conditions'])){
+		if(isset($params['fui']) && $this->_stringCondition($params['fui'])){
+			if(isset($params['conditions']) && $this->_stringCondition($params['conditions'])){
 				$params['conditions'] = $this->get_relate_sub_select($params['fui']) . ' AND ' . $params['conditions'];
 			} else {
 				$params['conditions'] = $this->get_relate_sub_select($params['fui']);
@@ -56,7 +56,7 @@ class Hit_AbbreviationModel extends Hit_Model
 		} else {
 			return FALSE;
 		}
-		return $this->get_rows_num($params, $escape);
+		return $this->getRowsNum($params, $escape);
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Hit_AbbreviationModel extends Hit_Model
 	 */
 	protected function get_relate_sub_select($fui)
 	{
-		if($this->string_condition($fui)){
+		if($this->_stringCondition($fui)){
 			$subselect = "abrid IN (SELECT abrid FROM `abbre_weibomsg` WHERE mid 
 				IN (SELECT mid FROM `weibomsg` WHERE uid IN ({$fui})))";
 			return $subselect;
