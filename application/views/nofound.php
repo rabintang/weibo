@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  	<title><?=$key_word;?> 搜索结果-知识推荐</title>
+  	<title><?=$keyword;?> 搜索结果-知识推荐</title>
 	<base href="<?=get_assets_base_url();?>" />
   	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
   	<link href="css/base.css" type="text/css" rel="stylesheet">
@@ -19,15 +19,15 @@
 			<div class="main">
 			  	<div class="search_title">
 				    <span class="span1">搜索</span>
-				    <span class="span2"><?=$key_word;?></span>
+				    <span class="span2"><?=$keyword;?></span>
 				    <span class="span3">的结果</span>
 				    <span class="span4">(共0条)</span>
 			  	</div>
 			  	<div class="explain">
-			    	<span>找不到和您的查询 "<font color="#FF0000"><?=$key_word;?></font>" 相关的词条。</span>
+			    	<span>找不到和您的查询 "<font color="#FF0000"><?=$keyword;?></font>" 相关的词条。</span>
 			  	</div>
 			  	<div class="ititle">
-			    	<span><font color="#FF0000"><?=$key_word;?></font> 的网页搜索结果：</span>
+			    	<span><font color="#FF0000"><?=$keyword;?></font> 的网页搜索结果：</span>
 			  	</div>
 			  	<!-- 网页搜索结果1 -->
 			  	<div class="webresult">

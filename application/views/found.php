@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  	<title>自然语言处理搜索结果-知识推荐</title>
+  	<title><?=$keyword;?>搜索结果-知识推荐</title>
 	<base href="<?=get_assets_base_url();?>" />
   	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
   	<link href="css/base.css" type="text/css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <div class="all">
   	<?=$head;?>
 	<form id="sword" name="sword" action="<?=site_url("search/index");?>" method="post" target="_self">
-	    <input name="word" type="text" value="<?=$key_word?>" style="display:none;" />
+	    <input name="word" type="text" value="<?=$keyword?>" style="display:none;" />
 	</form>
   	<div class="middle">
 	<!-- bof 页面中部 -->
@@ -33,7 +33,7 @@
 		<div class="main">
 		  	<div class="search_title">
 			    <span class="span1">搜索</span>
-			    <span class="span2"><?=$key_word;?></span>
+			    <span class="span2"><?=$keyword;?></span>
 			    <span class="span3">的结果</span>
 			    <span class="span4">(共<?=$total_rows;?>条)</span>
 		  	</div><?php
@@ -42,35 +42,35 @@
 		  	<div class="voc_main" id="voc1">
 			<div class="content_a"><?php
 				$output = "<p><a onclick=\"javascript:recordAction('" . site_url("detail/index/" .
-					$item['abbre']['abrid']) . "', 'searchfound');return false;\"/>";
+					$item['entry']['entryid']) . "', 'searchfound');return false;\"/>";
 				echo $output;
 			?>
-			<span><?=$item['abbre']["kl"];?></span></a>
-				&nbsp;&nbsp;<?=$item['abbre']["bf"];?></p>
+			<span><?=$item['entry']["name"];?></span></a>
+				&nbsp;&nbsp;<?=$item['entry']["description"];?></p>
 			</div><?php
-			if(isset($item['relate_abbres'])) {
-				echo get_relate_abbres($item['relate_abbres'], 'searchfound');
+			if(isset($item['correlate_entries'])) {
+				echo get_correlate_entries($item['correlate_entries'], 'searchfound');
 			}?>
-			<?=get_wk_bk($item['abbre']['wk'], $item['abbre']['bk']);?>
+			<?=get_wiki_and_baike($item['entry']['wiki'], $item['entry']['baike']);?>
 			<!-- bof 微博列表 -->
 			<div class="main_weibo">
 			  	<div class="weibo_tittle">
 			     	<span >相关微博: </span><?php
 				    if(isset($item['bloggers'])){
-				    	echo get_relate_blogger($item['bloggers']);
+				    	echo get_correlate_bloggers($item['bloggers']);
 					}?>
 			  	</div><?php 
-			  	if(isset($item['wb_brif']) && sizeof($item['wb_brif']) > 0) {?>
+			  	if(isset($item['blogs']) && sizeof($item['blogs']) > 0) {?>
 			  		<div class="weibo_tittle_sep">
 			  			<div class="weibo_tittle_sep_line"></div>
 			  		</div><?php
-			  		$first_flag = TRUE;
-			  		foreach($item['wb_brif'] as $wb_brif){
-			  			if( ! $first_flag) {
+			  		$is_first = TRUE;
+			  		foreach($item['blogs'] as $blog){
+			  			if( ! $is_first) {
 			  				echo '<div class="weibo_sep"><div class="weibo_sep_line"></div></div>';
 			  			}
-			  			$first_flag = FALSE;
-			  			echo $wb_brif;
+			  			$is_first = FALSE;
+			  			echo $blog;
 			  		}
 				}?>
 			</div>
@@ -83,7 +83,7 @@
 		  	<!-- end 分页 -->		  
 		</div>
 		<!-- end 词条列表 -->		
-		<?=$box_right;?>
+		<?=$right_box;?>
 		</div>
 	</div>
 	<!-- end 页面中部 -->	

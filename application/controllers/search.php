@@ -18,19 +18,19 @@ class Search extends Hit_Controller
 
 	public function index()
 	{
-		$this->load->model('Hit_AbbreviationModel');
-		$key_word = $this->input->post('word');
+		$this->load->model('Hit_EntryModel');
+		$keyword = $this->input->post('word');
 
-		if( ! $key_word){ // 跳转到404
+		if( ! $keyword){ // 跳转到404
 			show_404('关键词不能为空');
 		}
 
-		$rows_num = $this->Hit_AbbreviationModel->getRowsNum(array(
-					'like' => array('likes'=>array('kl'=>$key_word),'type'=>'both')
+		$rows_num = $this->Hit_EntryModel->getRowsNum(array(
+					'like' => array('likes'=>array('name'=>$keyword),'type'=>'both')
 					));
 
 		$data = array(
-					'key_word' => $key_word
+					'keyword' => $keyword
 					);
 
 		if($rows_num > 0){
@@ -44,14 +44,14 @@ class Search extends Hit_Controller
 	protected function found($data=array())
 	{
 		$this->load->model('Hit_UserModel', array('uid'=>get_session('uid')));
-		$this->load->library('Hit_KlgRecommender', array('uid'=>get_session('uid')));
-		$this->load->library('Hit_WbRecommender');
+		$this->load->library('Hit_EntryRecommender', array('uid'=>get_session('uid')));
+		$this->load->library('Hit_BlogRecommender');
 
 		// 获取URL参数
 		$lpagenum = $this->uri->segment(Search::INDEX_LPAGENUM, 1);
 		$rpagenum = $this->uri->segment(Search::INDEX_RPAGENUM, 1);
 
-		$fui = $this->Hit_UserModel->get_fui();
+		$fui = $this->Hit_UserModel->fui();
 		
 		// 设置分页
 		$total_rows = $data['total_rows'];
@@ -59,33 +59,33 @@ class Search extends Hit_Controller
 		$params = array(
 					'url_template' => site_url($url_template),
 					'total_rows' => $total_rows,
-					'pagesize' => get_config_value('search_klg_pagesize'),
+					'pagesize' => get_config_value('SEARCH_ENTRY_PAGESIZE'),
 					'cur_page' => $lpagenum
 					);
 		$this->load->library('Hit_Pagination',$params);
-		$str_pagination = $this->hit_pagination->create_links();
+		$pagination = $this->hit_pagination->generatePagination();
 
 		// 构造待传递参数
-		$relate_status_count = get_config_value('main_max_relate_status');
-		$relate_blogger_count = get_config_value('main_max_relate_blogger');
-		$relate_abbre_count = get_config_value('main_max_relate_abbre');
-		$ary_abbres = $this->hit_klgrecommender->recommend_search_per_page($lpagenum, $data['key_word']);
-		$ary_items = array();
-		foreach($ary_abbres as $abbre){
-			$ary_wb_brif = $this->hit_wbrecommender->recommend_brif($abbre['abrid'], $relate_status_count, $fui);
-			$ary_blogger = $this->hit_wbrecommender->recommend_blogger($abbre['abrid'], $relate_blogger_count);
-			$ary_relate_abbres = $this->hit_klgrecommender->recommend_relate_abbre($abbre['abrid'], $relate_abbre_count);
-			$ary_items[] = array(
-							'abbre'=>$abbre,
-							'wb_brif'=>$ary_wb_brif,
-							'bloggers'=>$ary_blogger,
-							'relate_abbres'=>$ary_relate_abbres
+		$entries = $this->hit_entryrecommender->recommendSearchPageEntries($lpagenum, $data['keyword']);
+		$items = array();
+		foreach($entries as $entry){
+			$blogs = $this->hit_blogrecommender->getMainPageCorrelateBlogs($entry['entryid'], 
+				get_config_value('MAIN_CORRELATE_BLOGS_COUNT'), $fui);
+			$bloggers = $this->hit_blogrecommender->getCorrelateBloggers($entry['entryid'], 
+				get_config_value('MAIN_CORRELATE_BLOGGERS_COUNT'));
+			$correlate_entries = $this->hit_entryrecommender->getCorrelateEntries($entry['entryid'], 
+				get_config_value('MAIN_CORRELATE_ENTRY_COUNT'));
+			$items[] = array(
+							'entry'=>$entry,
+							'blogs'=>$blogs,
+							'bloggers'=>$bloggers,
+							'correlate_entries'=>$correlate_entries
 							);
 		}
-		$box_right = get_box_right($rpagenum);
-		$data['pagination'] = $str_pagination;
-		$data['items'] = $ary_items;
-		$data['box_right'] = $box_right;
+		$right_box = get_right_box($rpagenum);
+		$data['pagination'] = $pagination;
+		$data['items'] = $items;
+		$data['right_box'] = $right_box;
 		$this->load->auto_view('found', $data);
 	}
 
